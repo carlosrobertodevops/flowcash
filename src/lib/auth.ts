@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { db } from "@/db";
-import { users, type User } from "@/db/schema";
+import { users, type User, type UserRole } from "@/db/schema";
 export { hashPassword, verifyPassword } from "@/lib/password";
 
 const cookieName = "flowcash_session";
@@ -15,14 +15,16 @@ const secret = new TextEncoder().encode(
 type SessionPayload = {
   userId: string;
   email: string;
-  role: "user" | "admin";
+  role: UserRole;
+  tenantId: string | null;
 };
 
-export async function createSession(user: Pick<User, "id" | "email" | "role">) {
+export async function createSession(user: Pick<User, "id" | "email" | "role" | "tenantId">) {
   const token = await new SignJWT({
     userId: user.id,
     email: user.email,
     role: user.role,
+    tenantId: user.tenantId,
   } satisfies SessionPayload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -64,6 +66,7 @@ export async function getSession(): Promise<SessionPayload | null> {
       userId: payload.userId,
       email: payload.email,
       role: payload.role,
+      tenantId: payload.tenantId ?? null,
     };
   } catch {
     return null;

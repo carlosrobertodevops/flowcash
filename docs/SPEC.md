@@ -23,6 +23,8 @@ Entregar uma aplicacao funcional com:
 - Cotacao BRL/USD configuravel.
 - Notificacoes internas no dashboard.
 - Colaboradores por email em contas compartilhadas.
+- SaaS multi-tenant com tenants, papeis e limites por plano.
+- Modulo administrativo para coordenar usuarios, tenants, planos e limites.
 
 ## 3. Stack Obrigatoria
 
@@ -44,6 +46,7 @@ Entregar uma aplicacao funcional com:
 Campos:
 
 - `id`
+- `tenantId`
 - `name`
 - `email`
 - `passwordHash`
@@ -55,13 +58,34 @@ Regras:
 
 - Email deve ser unico.
 - Senha deve ser salva com hash.
-- `role` inicial pode ser `user` ou `admin`.
+- `role` pode ser `super-user`, `admin`, `standard` ou `free`.
+
+### Tenant
+
+Campos:
+
+- `id`
+- `name`
+- `plan`: `free`, `standard` ou `business`
+- `payableLimit`
+- `receivableLimit`
+- `createdAt`
+- `updatedAt`
+
+Regras:
+
+- Cada cadastro cria um tenant.
+- Primeiro usuario cadastrado vira `super-user`.
+- Cadastros seguintes viram `admin` do tenant criado.
+- Plano `free` limita 10 contas a pagar e 10 contas a receber.
+- Limite `0` significa ilimitado.
 
 ### Conta
 
 Campos:
 
 - `id`
+- `tenantId`
 - `userId`
 - `title`
 - `description`
@@ -89,6 +113,7 @@ Regras:
 - Conta `receivable` pode ser `pending` ou `received`.
 - Recorrencia `monthly` ou `yearly` gera as proximas 6 contas no cadastro.
 - Colaboradores informados por email podem visualizar e editar a conta compartilhada.
+- Criacao e importacao respeitam os limites `payableLimit` e `receivableLimit` do tenant.
 
 ## 5. Autenticacao
 
@@ -105,13 +130,16 @@ Seed obrigatoria:
 
 - Email: `admin@flowclash.com`
 - Senha: `@flowcash123`
-- Role: `admin`
+- Role: `super-user`
+- Tenant: `FlowCash Global`
+- Plano: `business`
 
 ## 6. Dashboard
 
 A pagina principal autenticada deve exibir:
 
 - Header com nome/email do usuario.
+- Tenant, role, plano e uso de limite de contas.
 - Botao de logout.
 - Toggle dark/light mode.
 - Botao para criar nova conta.
@@ -169,7 +197,8 @@ Ao apagar:
 
 O seed deve criar:
 
-- Usuario admin.
+- Tenant global.
+- Usuario `super-user`.
 - 5 contas de exemplo.
 
 As contas devem cobrir:
@@ -227,6 +256,25 @@ title,description,dueDate,amountBrl,amountUsd,type,status,category,tags,collabor
 
 - Contas aceitam emails de colaboradores separados por virgula.
 - Colaboradores conseguem ver e editar contas compartilhadas.
+
+### SaaS Multi-Tenant
+
+- `super-user` acessa todos os tenants.
+- `admin` acessa todas as contas do proprio tenant.
+- `standard` e `free` acessam contas proprias e compartilhadas.
+- Contas sempre recebem `tenantId`.
+- Dashboard de usuario nao `super-user` filtra por `tenantId`.
+- Limites sao aplicados antes de criar contas manualmente ou via CSV.
+
+### Administracao SaaS
+
+- `/admin` e acessivel por `super-user` e `admin`.
+- `super-user` visualiza todos os tenants e usuarios.
+- `super-user` altera papel, tenant, plano e limites.
+- `admin` visualiza usuarios do proprio tenant.
+- `admin` altera papel de usuarios do proprio tenant para `admin`, `standard` ou `free`.
+- `admin` nao altera `super-user`, tenant externo, plano ou limites.
+- `standard` e `free` sao redirecionados para `/`.
 
 ## 10. Visual
 

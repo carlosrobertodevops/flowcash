@@ -13,6 +13,7 @@ import {
   LogOut,
   Plus,
   Printer,
+  ShieldCheck,
   Upload,
   WalletCards,
 } from "lucide-react";
@@ -48,6 +49,15 @@ type DashboardProps = {
   user: {
     name: string;
     email: string;
+    role: string;
+    tenantName: string;
+    plan: string;
+  };
+  quota: {
+    payableLimit: number;
+    receivableLimit: number;
+    payableUsed: number;
+    receivableUsed: number;
   };
   accounts: DashboardAccount[];
   exchangeRate: number;
@@ -91,7 +101,11 @@ function isSameOrAfterToday(date: Date, today: Date) {
   return cleanDate >= cleanToday;
 }
 
-export function Dashboard({ user, accounts, exchangeRate }: DashboardProps) {
+function quotaText(used: number, limit: number) {
+  return limit <= 0 ? `${used}/ilimitado` : `${used}/${limit}`;
+}
+
+export function Dashboard({ user, quota, accounts, exchangeRate }: DashboardProps) {
   const [selectedAccount, setSelectedAccount] = useState<DashboardAccount | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [filter, setFilter] = useState("");
@@ -478,6 +492,11 @@ export function Dashboard({ user, accounts, exchangeRate }: DashboardProps) {
             <p className="mt-1 text-sm text-muted-foreground">
               {user.name} · {user.email}
             </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {user.tenantName} · {user.role} · plano {user.plan} · pagar{" "}
+              {quotaText(quota.payableUsed, quota.payableLimit)} · receber{" "}
+              {quotaText(quota.receivableUsed, quota.receivableLimit)}
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
@@ -487,6 +506,14 @@ export function Dashboard({ user, accounts, exchangeRate }: DashboardProps) {
             <Button type="button" variant="secondary" onClick={() => window.print()}>
               <Printer size={16} /> PDF
             </Button>
+            {user.role === "super-user" || user.role === "admin" ? (
+              <a
+                href="/admin"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-border bg-card/70 px-4 text-sm font-medium text-foreground backdrop-blur transition hover:border-sky-400/70 hover:text-sky-500"
+              >
+                <ShieldCheck size={16} /> Admin
+              </a>
+            ) : null}
             <form action={logoutAction}>
               <Button type="submit" variant="secondary">
                 <LogOut size={16} /> Sair

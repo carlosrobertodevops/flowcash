@@ -49,6 +49,20 @@ Camadas esperadas:
 
 ## 4. Modelo de Dados
 
+### tenants
+
+Representa uma organizacao/conta SaaS isolada.
+
+Campos:
+
+- `id`: UUID primary key.
+- `name`: texto.
+- `plan`: enum `free`, `standard`, `business`.
+- `payableLimit`: numeric inteiro; `0` significa ilimitado.
+- `receivableLimit`: numeric inteiro; `0` significa ilimitado.
+- `createdAt`: timestamp.
+- `updatedAt`: timestamp.
+
 ### users
 
 Armazena usuarios autenticaveis.
@@ -56,10 +70,11 @@ Armazena usuarios autenticaveis.
 Campos:
 
 - `id`: UUID ou serial primary key.
+- `tenantId`: referencia para `tenants.id`.
 - `name`: texto.
 - `email`: texto unico.
 - `passwordHash`: texto.
-- `role`: enum/texto, valores iniciais `user` e `admin`.
+- `role`: enum `super-user`, `admin`, `standard`, `free`.
 - `createdAt`: timestamp.
 - `updatedAt`: timestamp.
 
@@ -74,6 +89,7 @@ Armazena contas a pagar e a receber.
 Campos:
 
 - `id`: UUID ou serial primary key.
+- `tenantId`: referencia para `tenants.id`.
 - `userId`: referencia para `users.id`.
 - `title`: texto.
 - `description`: texto.
@@ -109,8 +125,8 @@ Indices:
 
 - index em `userId`.
 - index em `dueDate`.
-- index composto em `userId`, `deleted`, `dueDate`.
-- index composto em `userId`, `type`, `status`.
+- index composto em `tenantId`, `deleted`, `dueDate`.
+- index composto em `tenantId`, `type`, `status`.
 
 Regra importante:
 
@@ -139,6 +155,9 @@ Regras:
 - Contas a vencer nos proximos 7 dias sao `pending` com `dueDate >= hoje` e `dueDate <= hoje + 7 dias`.
 - Contas recorrentes geram 6 ocorrencias futuras no momento da criacao.
 - Contas compartilhadas podem ser acessadas pelo dono ou por emails em `collaboratorEmails`.
+- Plano `free` limita 10 contas `payable` e 10 contas `receivable`.
+- Limite `0` no tenant significa ilimitado.
+- Criacao recorrente consome 7 unidades do limite da respectiva `type`.
 
 ## 6. Autenticacao e Autorizacao
 
@@ -148,8 +167,10 @@ Regras:
 2. Zod valida entrada.
 3. Sistema verifica se email ja existe.
 4. Senha e convertida para hash com bcrypt.
-5. Usuario e criado no banco.
-6. Sistema cria sessao e redireciona para dashboard.
+5. Um tenant e criado para o usuario.
+6. Usuario e criado no banco.
+7. Primeiro usuario do sistema recebe `super-user`; demais cadastros recebem `admin`.
+8. Sistema cria sessao e redireciona para dashboard.
 
 ### Fluxo de Login
 
@@ -175,13 +196,16 @@ Cookie recomendado:
 
 - Nome: `flowcash_session`
 - Flags: `httpOnly`, `sameSite=lax`, `secure` em producao, `path=/`
-- Payload minimo: `userId`, `email`, `role`
+- Payload minimo: `userId`, `email`, `role`, `tenantId`
 
 ### Protecao de Dados
 
-- Todas as queries de contas devem filtrar por `userId`.
+- `super-user` pode acessar contas de todos os tenants.
+- `admin` pode acessar todas as contas do seu tenant.
+- `standard` e `free` podem acessar contas proprias e contas compartilhadas por email.
+- Todas as queries de contas devem filtrar por `tenantId`, exceto visao global do `super-user`.
 - Rotas autenticadas devem redirecionar usuario sem sessao para login.
-- Usuario nao-admin nao deve acessar dados de outros usuarios.
+- Usuario sem permissao nao deve acessar dados fora de seu tenant.
 
 ## 7. Principais Telas
 
@@ -202,6 +226,7 @@ Layout:
 Rota sugerida:
 
 - `/`
+- `/admin`
 
 Componentes:
 
@@ -217,6 +242,20 @@ Componentes:
 - Botao de impressao/PDF.
 - Notificacoes internas.
 - Filtro por texto/categoria/tag.
+
+### Administracao
+
+Rota:
+
+- `/admin`
+
+Responsabilidades:
+
+- Listar tenants, planos, limites e uso de contas.
+- Listar usuarios com tenant e papel.
+- Permitir que `super-user` altere tenant, papel, plano e limites.
+- Permitir que `admin` altere usuarios apenas do proprio tenant.
+- Bloquear `standard` e `free`.
 
 ## 8. Server Actions e API Interna
 
@@ -234,12 +273,15 @@ Acoes sugeridas:
 - `requestPasswordReset(input)`
 - `resetPassword(input)`
 - `importCsv(input)`
+- `updateAdminUser(input)`
+- `updateAdminTenant(input)`
 
 Validacao:
 
 - Cada action deve validar entrada com Zod.
 - Actions de conta devem exigir usuario autenticado.
 - Actions devem retornar erros estruturados para o formulario.
+- Actions administrativas devem validar papel, tenant e impedir alteracao indevida de `super-user`.
 
 ## 9. Consultas do Dashboard
 
@@ -249,6 +291,13 @@ Filtro base:
 
 ```sql
 where user_id = current_user_id
+  and deleted = false
+```
+
+Filtro multi-tenant:
+
+```sql
+where tenant_id = current_tenant_id
   and deleted = false
 ```
 

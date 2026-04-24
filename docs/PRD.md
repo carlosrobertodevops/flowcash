@@ -61,12 +61,43 @@ Um app web com login, cadastro e dashboard centralizado. A pagina principal most
 - Cotacao BRL/USD configuravel.
 - Notificacoes internas no dashboard.
 - Compartilhamento de contas por email de colaborador.
+- SaaS multi-tenant com planos, papeis e limites por quantidade de contas.
+- Modulo de administracao para gerenciar usuarios, tenants, planos e limites.
+
+### SaaS e Multi-Tenant
+
+- Cada cadastro cria um tenant proprio.
+- O primeiro usuario cadastrado vira `super-user`, com acesso global.
+- Cadastros seguintes viram `admin` do proprio tenant.
+- Papeis suportados: `super-user`, `admin`, `standard`, `free`.
+- Planos suportados: `free`, `standard`, `business`.
+- Plano `free` limita 10 contas `payable` e 10 contas `receivable`.
+- Limite `0` significa ilimitado.
+- Recorrencia mensal/anual consome 7 unidades do limite: conta original + 6 futuras.
+- `admin` acessa todas as contas do seu tenant.
+- `standard` e `free` acessam contas proprias e compartilhadas por `collaboratorEmails`.
+- `/admin` permite ao `super-user` coordenar todos os usuarios e tenants.
+- `/admin` permite ao `admin` coordenar usuarios apenas do proprio tenant.
+- Somente `super-user` altera plano e limites de tenants.
+
+### RF16 - Administracao SaaS
+
+O sistema deve ter modulo administrativo em `/admin`.
+
+Critérios de aceite:
+
+- `super-user` visualiza todos os tenants, usuarios, papeis, planos e uso de limites.
+- `super-user` altera papel e tenant de usuarios.
+- `super-user` altera plano, nome e limites de tenants.
+- `admin` visualiza e altera usuarios apenas do proprio tenant.
+- `admin` nao altera plano, limites, tenant externo ou `super-user`.
+- Usuarios `standard` e `free` nao acessam `/admin`.
 
 ### Fora do Escopo Inicial
 
 - Envio real de email, push ou WhatsApp.
 - Integracao bancaria direta/Open Finance.
-- Permissoes complexas por equipe.
+- Billing real, checkout e cobranca recorrente.
 - Cotacao automatica via provider externo em producao.
 
 ## 7. Requisitos Funcionais
@@ -214,6 +245,7 @@ O dashboard deve destacar contas urgentes e permitir compartilhar uma conta com 
 - Entradas de formulario devem ser validadas com Zod.
 - Senhas nao podem ser armazenadas em texto puro.
 - Operacoes de banco devem filtrar por usuario autenticado.
+- Operacoes de banco devem respeitar `tenantId`, papel do usuario e limite do plano.
 
 ## 9. Direcao Visual
 
@@ -236,7 +268,9 @@ Seed obrigatoria:
 - Usuario admin:
   - Email: `admin@flowclash.com`
   - Senha: `@flowcash123`
-  - Perfil: admin/super-usuario
+  - Perfil: `super-user`
+  - Tenant: `FlowCash Global`
+  - Plano: `business`
 - 5 contas de exemplo:
   - Pelo menos uma conta a pagar vencida.
   - Pelo menos uma conta a receber vencida.

@@ -59,4 +59,56 @@ export const importCsvSchema = z.object({
   csv: z.string().trim().min(10, "Cole pelo menos uma linha CSV valida."),
 });
 
+export const adminUserUpdateSchema = z.object({
+  userId: z.string().uuid("Usuario invalido."),
+  name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres.").max(100),
+  role: z.enum(["admin", "standard", "free", "super-user"]),
+  tenantId: z.string().uuid("Tenant invalido."),
+});
+
+export const adminTenantUpdateSchema = z.object({
+  tenantId: z.string().uuid("Tenant invalido."),
+  name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres.").max(100),
+  plan: z.enum(["free", "standard", "business"]),
+  payableLimit: z.coerce
+    .number({ invalid_type_error: "Limite a pagar invalido." })
+    .int("Limite a pagar deve ser inteiro.")
+    .min(0, "Limite a pagar nao pode ser negativo.")
+    .max(999999, "Limite a pagar muito alto."),
+  receivableLimit: z.coerce
+    .number({ invalid_type_error: "Limite a receber invalido." })
+    .int("Limite a receber deve ser inteiro.")
+    .min(0, "Limite a receber nao pode ser negativo.")
+    .max(999999, "Limite a receber muito alto."),
+});
+
+export const adminTenantCreateSchema = z.object({
+  name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres.").max(100),
+  plan: z.enum(["free", "standard", "business"]).default("free"),
+  payableLimit: z.coerce
+    .number({ invalid_type_error: "Limite a pagar invalido." })
+    .int("Limite a pagar deve ser inteiro.")
+    .min(0, "Limite a pagar nao pode ser negativo.")
+    .max(999999, "Limite a pagar muito alto.")
+    .default(10),
+  receivableLimit: z.coerce
+    .number({ invalid_type_error: "Limite a receber invalido." })
+    .int("Limite a receber deve ser inteiro.")
+    .min(0, "Limite a receber nao pode ser negativo.")
+    .max(999999, "Limite a receber muito alto.")
+    .default(10),
+});
+
+export const adminUserCreateSchema = z.object({
+  name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres.").max(100),
+  email: z.string().trim().email("Informe um email valido.").toLowerCase(),
+  password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres."),
+  role: z.enum(["admin", "standard", "free", "super-user"]),
+  tenantId: z.string().uuid("Tenant invalido."),
+});
+
+export const adminUserDeleteSchema = z.object({
+  userId: z.string().uuid("Usuario invalido."),
+});
+
 export type AccountInput = z.infer<typeof accountInputSchema>;

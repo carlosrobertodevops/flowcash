@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db, pool } from "@/db";
-import { accounts, users } from "@/db/schema";
+import { accounts, tenants, users } from "@/db/schema";
 import { hashPassword } from "@/lib/password";
 
 const adminEmail = "admin@flowclash.com";
@@ -84,20 +84,40 @@ const sampleAccounts = [
 async function main() {
   const passwordHash = await hashPassword(adminPassword);
 
+  const [existingTenant] = await db
+    .select()
+    .from(tenants)
+    .where(eq(tenants.name, "FlowCash Global"))
+    .limit(1);
+  const [createdTenant] = existingTenant
+    ? [existingTenant]
+    : await db
+        .insert(tenants)
+        .values({
+          name: "FlowCash Global",
+          plan: "business",
+          payableLimit: "0",
+          receivableLimit: "0",
+        })
+        .returning();
+  const activeTenant = createdTenant;
+
   const [admin] = await db
     .insert(users)
     .values({
+      tenantId: activeTenant.id,
       name: "Admin FlowCash",
       email: adminEmail,
       passwordHash,
-      role: "admin",
+      role: "super-user",
     })
     .onConflictDoUpdate({
       target: users.email,
       set: {
+        tenantId: activeTenant.id,
         name: "Admin FlowCash",
         passwordHash,
-        role: "admin",
+        role: "super-user",
         updatedAt: new Date(),
       },
     })
@@ -113,8 +133,18 @@ async function main() {
     if (existing.length === 0) {
       await db.insert(accounts).values({
         ...account,
+        tenantId: activeTenant.id,
         userId: admin.id,
       });
+    } else {
+      await db
+        .update(accounts)
+        .set({
+          tenantId: activeTenant.id,
+          userId: admin.id,
+          updatedAt: new Date(),
+        })
+        .where(eq(accounts.id, existing[0].id));
     }
   }
 

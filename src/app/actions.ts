@@ -1,10 +1,10 @@
 "use server";
 
-import { eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { accounts, passwordResetTokens, users } from "@/db/schema";
+import { accounts, passwordResetTokens, tenants, users, type AccountType } from "@/db/schema";
 import {
   createSession,
   destroySession,
@@ -14,6 +14,11 @@ import {
 } from "@/lib/auth";
 import {
   accountInputSchema,
+  adminTenantCreateSchema,
+  adminTenantUpdateSchema,
+  adminUserCreateSchema,
+  adminUserDeleteSchema,
+  adminUserUpdateSchema,
   authInputSchema,
   importCsvSchema,
   passwordResetRequestSchema,
@@ -25,6 +30,13 @@ type ActionState = {
   ok: boolean;
   message?: string;
 };
+
+type AccountQuota = {
+  payableLimit: number;
+  receivableLimit: number;
+};
+
+const adminAssignableRoles = ["admin", "standard", "free"] as const;
 
 function formString(formData: FormData, key: string) {
   return String(formData.get(key) ?? "");
@@ -65,9 +77,21 @@ function normalizeEmails(value: string) {
 }
 
 function canAccess(
-  account: { userId: string; collaboratorEmails: string },
-  session: { userId: string; email: string },
+  account: { tenantId: string | null; userId: string; collaboratorEmails: string },
+  session: { userId: string; email: string; tenantId: string | null; role: string },
 ) {
+  if (session.role === "super-user") {
+    return true;
+  }
+
+  if (account.tenantId !== session.tenantId) {
+    return false;
+  }
+
+  if (session.role === "admin") {
+    return true;
+  }
+
   if (account.userId === session.userId) {
     return true;
   }
@@ -78,7 +102,10 @@ function canAccess(
     .includes(session.email.toLowerCase());
 }
 
-async function getAccessibleAccount(accountId: string, session: { userId: string; email: string }) {
+async function getAccessibleAccount(
+  accountId: string,
+  session: { userId: string; email: string; tenantId: string | null; role: string },
+) {
   const [account] = await db.select().from(accounts).where(eq(accounts.id, accountId)).limit(1);
 
   if (!account || account.deleted || !canAccess(account, session)) {
@@ -86,6 +113,57 @@ async function getAccessibleAccount(accountId: string, session: { userId: string
   }
 
   return account;
+}
+
+function recurrenceRows(recurrence: "none" | "monthly" | "yearly") {
+  return recurrence === "none" ? 1 : 7;
+}
+
+async function tenantQuota(tenantId: string): Promise<AccountQuota> {
+  const [tenant] = await db
+    .select({
+      payableLimit: tenants.payableLimit,
+      receivableLimit: tenants.receivableLimit,
+    })
+    .from(tenants)
+    .where(eq(tenants.id, tenantId))
+    .limit(1);
+
+  return {
+    payableLimit: Number(tenant?.payableLimit ?? 10),
+    receivableLimit: Number(tenant?.receivableLimit ?? 10),
+  };
+}
+
+async function accountTypeCount(tenantId: string, type: AccountType) {
+  const [row] = await db
+    .select({ total: sql<number>`count(*)::int` })
+    .from(accounts)
+    .where(and(eq(accounts.tenantId, tenantId), eq(accounts.type, type), eq(accounts.deleted, false)));
+
+  return Number(row?.total ?? 0);
+}
+
+async function assertAccountLimit(
+  tenantId: string,
+  type: AccountType,
+  incomingRows: number,
+): Promise<string | null> {
+  const quota = await tenantQuota(tenantId);
+  const limit = type === "payable" ? quota.payableLimit : quota.receivableLimit;
+
+  if (limit <= 0) {
+    return null;
+  }
+
+  const current = await accountTypeCount(tenantId, type);
+
+  if (current + incomingRows > limit) {
+    const label = type === "payable" ? "a pagar" : "a receber";
+    return `Limite do plano atingido: ${current}/${limit} contas ${label}.`;
+  }
+
+  return null;
 }
 
 function firstError(error: unknown) {
@@ -119,6 +197,24 @@ function databaseErrorMessage(error: unknown) {
   }
 
   return "Erro ao acessar o banco de dados. Confira se o Postgres esta rodando e se o schema foi aplicado.";
+}
+
+async function requireAdminSession() {
+  const session = await getSession();
+
+  if (!session) {
+    return { error: "Sessao expirada. Entre novamente." as const };
+  }
+
+  if (session.role !== "super-user" && session.role !== "admin") {
+    return { error: "Acesso administrativo negado." as const };
+  }
+
+  if (!session.tenantId) {
+    return { error: "Usuario sem tenant ativo." as const };
+  }
+
+  return { session };
 }
 
 export async function loginAction(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -159,6 +255,7 @@ export async function registerAction(_: ActionState, formData: FormData): Promis
   }
 
   let existing: Array<{ id: string }>;
+  let userCount = 0;
 
   try {
     existing = await db
@@ -166,6 +263,8 @@ export async function registerAction(_: ActionState, formData: FormData): Promis
       .from(users)
       .where(eq(users.email, parsed.data.email))
       .limit(1);
+    const [countRow] = await db.select({ total: sql<number>`count(*)::int` }).from(users);
+    userCount = Number(countRow?.total ?? 0);
   } catch (error) {
     return { ok: false, message: databaseErrorMessage(error) };
   }
@@ -177,13 +276,25 @@ export async function registerAction(_: ActionState, formData: FormData): Promis
   let user: typeof users.$inferSelect;
 
   try {
+    const isFirstUser = userCount === 0;
+    const [tenant] = await db
+      .insert(tenants)
+      .values({
+        name: isFirstUser ? "FlowCash Global" : parsed.data.name,
+        plan: isFirstUser ? "business" : "free",
+        payableLimit: isFirstUser ? "0" : "10",
+        receivableLimit: isFirstUser ? "0" : "10",
+      })
+      .returning();
+
     [user] = await db
       .insert(users)
       .values({
+        tenantId: tenant.id,
         name: parsed.data.name,
         email: parsed.data.email,
         passwordHash: await hashPassword(parsed.data.password),
-        role: "user",
+        role: isFirstUser ? "super-user" : "admin",
       })
       .returning();
   } catch (error) {
@@ -302,6 +413,11 @@ export async function createAccountAction(formData: FormData): Promise<ActionSta
     return { ok: false, message: "Sessao expirada. Entre novamente." };
   }
 
+  if (!session.tenantId) {
+    return { ok: false, message: "Usuario sem tenant ativo." };
+  }
+  const tenantId = session.tenantId;
+
   const parsed = accountInputSchema.safeParse(accountPayload(formData));
 
   if (!parsed.success) {
@@ -309,9 +425,20 @@ export async function createAccountAction(formData: FormData): Promise<ActionSta
   }
 
   try {
+    const limitMessage = await assertAccountLimit(
+      tenantId,
+      parsed.data.type,
+      recurrenceRows(parsed.data.recurrence),
+    );
+
+    if (limitMessage) {
+      return { ok: false, message: limitMessage };
+    }
+
     const [created] = await db
       .insert(accounts)
       .values({
+        tenantId,
         userId: session.userId,
         title: parsed.data.title,
         description: parsed.data.description,
@@ -331,6 +458,7 @@ export async function createAccountAction(formData: FormData): Promise<ActionSta
       const recurrence = parsed.data.recurrence;
       await db.insert(accounts).values(
         Array.from({ length: 6 }, (_, index) => ({
+          tenantId,
           userId: session.userId,
           title: `${parsed.data.title} #${index + 2}`,
           description: parsed.data.description,
@@ -383,6 +511,22 @@ export async function updateAccountAction(
     return { ok: false, message: "Conta nao encontrada." };
   }
 
+  if (parsed.data.type !== current.type) {
+    if (!session.tenantId) {
+      return { ok: false, message: "Usuario sem tenant ativo." };
+    }
+
+    try {
+      const limitMessage = await assertAccountLimit(session.tenantId, parsed.data.type, 1);
+
+      if (limitMessage) {
+        return { ok: false, message: limitMessage };
+      }
+    } catch (error) {
+      return { ok: false, message: databaseErrorMessage(error) };
+    }
+  }
+
   try {
     await db
       .update(accounts)
@@ -414,6 +558,10 @@ export async function softDeleteAccountAction(accountId: string): Promise<Action
 
   if (!session) {
     return { ok: false, message: "Sessao expirada. Entre novamente." };
+  }
+
+  if (!session.tenantId) {
+    return { ok: false, message: "Usuario sem tenant ativo." };
   }
 
   let current: Awaited<ReturnType<typeof getAccessibleAccount>>;
@@ -452,6 +600,11 @@ export async function importCsvAction(formData: FormData): Promise<ActionState> 
     return { ok: false, message: "Sessao expirada. Entre novamente." };
   }
 
+  if (!session.tenantId) {
+    return { ok: false, message: "Usuario sem tenant ativo." };
+  }
+  const tenantId = session.tenantId;
+
   const parsed = importCsvSchema.safeParse({ csv: formString(formData, "csv") });
 
   if (!parsed.success) {
@@ -483,6 +636,7 @@ export async function importCsvAction(formData: FormData): Promise<ActionState> 
 
       return result.success
         ? {
+            tenantId,
             userId: session.userId,
             title: result.data.title,
             description: result.data.description,
@@ -503,6 +657,26 @@ export async function importCsvAction(formData: FormData): Promise<ActionState> 
   }
 
   try {
+    const incomingByType = values.reduce(
+      (total, value) => {
+        total[value.type] += 1;
+        return total;
+      },
+      { payable: 0, receivable: 0 },
+    );
+
+    for (const type of ["payable", "receivable"] as const) {
+      if (incomingByType[type] === 0) {
+        continue;
+      }
+
+      const limitMessage = await assertAccountLimit(tenantId, type, incomingByType[type]);
+
+      if (limitMessage) {
+        return { ok: false, message: limitMessage };
+      }
+    }
+
     await db.insert(accounts).values(values);
   } catch (error) {
     return { ok: false, message: databaseErrorMessage(error) };
@@ -510,4 +684,257 @@ export async function importCsvAction(formData: FormData): Promise<ActionState> 
   revalidatePath("/");
 
   return { ok: true, message: `${values.length} conta(s) importada(s).` };
+}
+
+export async function updateAdminUserAction(formData: FormData): Promise<ActionState> {
+  const admin = await requireAdminSession();
+
+  if ("error" in admin) {
+    return { ok: false, message: admin.error };
+  }
+
+  const parsed = adminUserUpdateSchema.safeParse({
+    userId: formString(formData, "userId"),
+    name: formString(formData, "name"),
+    role: formString(formData, "role"),
+    tenantId: formString(formData, "tenantId"),
+  });
+
+  if (!parsed.success) {
+    return { ok: false, message: firstError(parsed.error) ?? "Dados invalidos." };
+  }
+
+  if (parsed.data.userId === admin.session.userId) {
+    return { ok: false, message: "Nao altere seu proprio papel administrativo." };
+  }
+
+  try {
+    const [target] = await db
+      .select({ id: users.id, tenantId: users.tenantId, role: users.role })
+      .from(users)
+      .where(eq(users.id, parsed.data.userId))
+      .limit(1);
+
+    if (!target) {
+      return { ok: false, message: "Usuario nao encontrado." };
+    }
+
+    if (admin.session.role === "admin") {
+      if (target.tenantId !== admin.session.tenantId || parsed.data.tenantId !== admin.session.tenantId) {
+        return { ok: false, message: "Admin so gerencia usuarios do proprio tenant." };
+      }
+
+      if (
+        target.role === "super-user" ||
+        !adminAssignableRoles.includes(parsed.data.role as (typeof adminAssignableRoles)[number])
+      ) {
+        return { ok: false, message: "Admin nao pode atribuir este papel." };
+      }
+    }
+
+    await db
+      .update(users)
+      .set({
+        name: parsed.data.name,
+        role: parsed.data.role,
+        tenantId: parsed.data.tenantId,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, parsed.data.userId));
+  } catch (error) {
+    return { ok: false, message: databaseErrorMessage(error) };
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/");
+  return { ok: true, message: "Usuario atualizado." };
+}
+
+export async function createAdminTenantAction(formData: FormData): Promise<ActionState> {
+  const admin = await requireAdminSession();
+
+  if ("error" in admin) {
+    return { ok: false, message: admin.error };
+  }
+
+  if (admin.session.role !== "super-user") {
+    return { ok: false, message: "Somente super-user pode criar tenants." };
+  }
+
+  const parsed = adminTenantCreateSchema.safeParse({
+    name: formString(formData, "name"),
+    plan: formString(formData, "plan") || "free",
+    payableLimit: formString(formData, "payableLimit") || "10",
+    receivableLimit: formString(formData, "receivableLimit") || "10",
+  });
+
+  if (!parsed.success) {
+    return { ok: false, message: firstError(parsed.error) ?? "Dados invalidos." };
+  }
+
+  try {
+    await db.insert(tenants).values({
+      name: parsed.data.name,
+      plan: parsed.data.plan,
+      payableLimit: String(parsed.data.payableLimit),
+      receivableLimit: String(parsed.data.receivableLimit),
+    });
+  } catch (error) {
+    return { ok: false, message: databaseErrorMessage(error) };
+  }
+
+  revalidatePath("/admin");
+  return { ok: true, message: "Tenant criado." };
+}
+
+export async function createAdminUserAction(formData: FormData): Promise<ActionState> {
+  const admin = await requireAdminSession();
+
+  if ("error" in admin) {
+    return { ok: false, message: admin.error };
+  }
+
+  const parsed = adminUserCreateSchema.safeParse({
+    name: formString(formData, "name"),
+    email: formString(formData, "email"),
+    password: formString(formData, "password"),
+    role: formString(formData, "role"),
+    tenantId: formString(formData, "tenantId"),
+  });
+
+  if (!parsed.success) {
+    return { ok: false, message: firstError(parsed.error) ?? "Dados invalidos." };
+  }
+
+  if (admin.session.role === "admin") {
+    if (parsed.data.tenantId !== admin.session.tenantId) {
+      return { ok: false, message: "Admin so cria usuarios no proprio tenant." };
+    }
+
+    if (
+      !adminAssignableRoles.includes(parsed.data.role as (typeof adminAssignableRoles)[number])
+    ) {
+      return { ok: false, message: "Admin nao pode atribuir este papel." };
+    }
+  }
+
+  try {
+    const existing = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, parsed.data.email))
+      .limit(1);
+
+    if (existing.length > 0) {
+      return { ok: false, message: "Email ja cadastrado." };
+    }
+
+    await db.insert(users).values({
+      tenantId: parsed.data.tenantId,
+      name: parsed.data.name,
+      email: parsed.data.email,
+      passwordHash: await hashPassword(parsed.data.password),
+      role: parsed.data.role,
+    });
+  } catch (error) {
+    return { ok: false, message: databaseErrorMessage(error) };
+  }
+
+  revalidatePath("/admin");
+  return { ok: true, message: "Usuario criado." };
+}
+
+export async function deleteAdminUserAction(formData: FormData): Promise<ActionState> {
+  const admin = await requireAdminSession();
+
+  if ("error" in admin) {
+    return { ok: false, message: admin.error };
+  }
+
+  const parsed = adminUserDeleteSchema.safeParse({
+    userId: formString(formData, "userId"),
+  });
+
+  if (!parsed.success) {
+    return { ok: false, message: firstError(parsed.error) ?? "Dados invalidos." };
+  }
+
+  if (parsed.data.userId === admin.session.userId) {
+    return { ok: false, message: "Nao remova seu proprio usuario." };
+  }
+
+  try {
+    const [target] = await db
+      .select({ id: users.id, tenantId: users.tenantId, role: users.role })
+      .from(users)
+      .where(eq(users.id, parsed.data.userId))
+      .limit(1);
+
+    if (!target) {
+      return { ok: false, message: "Usuario nao encontrado." };
+    }
+
+    if (target.role === "super-user") {
+      return { ok: false, message: "Super-user nao pode ser removido pelo painel." };
+    }
+
+    if (admin.session.role === "admin" && target.tenantId !== admin.session.tenantId) {
+      return { ok: false, message: "Admin so remove usuarios do proprio tenant." };
+    }
+
+    await db.delete(users).where(eq(users.id, parsed.data.userId));
+  } catch (error) {
+    return { ok: false, message: databaseErrorMessage(error) };
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/");
+  return { ok: true, message: "Usuario removido." };
+}
+
+export async function updateAdminTenantAction(formData: FormData): Promise<ActionState> {
+  const admin = await requireAdminSession();
+
+  if ("error" in admin) {
+    return { ok: false, message: admin.error };
+  }
+
+  const parsed = adminTenantUpdateSchema.safeParse({
+    tenantId: formString(formData, "tenantId"),
+    name: formString(formData, "name"),
+    plan: formString(formData, "plan"),
+    payableLimit: formString(formData, "payableLimit"),
+    receivableLimit: formString(formData, "receivableLimit"),
+  });
+
+  if (!parsed.success) {
+    return { ok: false, message: firstError(parsed.error) ?? "Dados invalidos." };
+  }
+
+  if (admin.session.role !== "super-user" && parsed.data.tenantId !== admin.session.tenantId) {
+    return { ok: false, message: "Admin so gerencia o proprio tenant." };
+  }
+
+  if (admin.session.role !== "super-user") {
+    return { ok: false, message: "Somente super-user altera plano e limites." };
+  }
+
+  try {
+    await db
+      .update(tenants)
+      .set({
+        name: parsed.data.name,
+        plan: parsed.data.plan,
+        payableLimit: String(parsed.data.payableLimit),
+        receivableLimit: String(parsed.data.receivableLimit),
+        updatedAt: new Date(),
+      })
+      .where(eq(tenants.id, parsed.data.tenantId));
+  } catch (error) {
+    return { ok: false, message: databaseErrorMessage(error) };
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/");
+  return { ok: true, message: "Tenant atualizado." };
 }
