@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: flowcash-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: flowcash
+      POSTGRES_PASSWORD: flowcash
+      POSTGRES_DB: flowcash
+    ports:
+      - "5432:5432"
+    volumes:
+      - flowcash-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flowcash -d flowcash"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flowcash-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://flowcash:flowcash@db:5432/flowcash
+      AUTH_SECRET: flowcash-local-docker-secret-change-me
+      EXCHANGE_RATE_BRL_USD: "5.15"
+    command: sh -c "bun run db:push && bun run db:seed && bun run start"
+    ports:
+      - "3000:3000"
+
+volumes:
+  flowcash-db-data:

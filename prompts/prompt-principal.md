@@ -4,7 +4,7 @@
 - O usuario pode criar, editar e deletar (fcam no banco com flag=apagada, e com a data de apagada) contas para pagar ou receber.
 - Cada conta tem titulo, conteudo/descrição, data de criação, data do vencimento, valor em reais e dolar, tipo (receber/pagar), situação (paga, recebida).
 
-## ** Página principal **
+## **Página principal**
 
 - A pagina inicial lista todas as contas em cards e ao lado uma tabela bonita e um gráfico.
 - Criar um dashboard com as contas a vencer nos proximos 7 dias, contas vencidas e contas pagas/recebidas.
@@ -20,9 +20,9 @@
 - Animações suaves para transições de página, abertura de diálogos e interações com os cards, como hover e clique.
 - Gráficos modernos e interativos para visualizar as contas a vencer, vencidas e pagas/recebidas, usando bibliotecas como Chart.js ou Recharts, integrados com o design geral do aplicativo.
 
-## Tecnologias:
+## **Tecnologias**:
 
-- Usa bun, Next.js, Drizzle ORM, Postgres, ShadCN/UI e Tailwind.
+- Usa **bun, Next.js, Drizzle ORM, Postgres, ShadCN/UI e Tailwind**.
 - Cria seed com 5 notas de exemplo, e com um super-usuário, com email: admin@flowclash.com, senha: @flowcash123.
 - nota nunca são apagadas no banco, só não aparecem mais para o usuário, ou seja, tem uma flag de apagada e a data de apagada.
-- Criar um docker-compose.yml para rodar o app e o banco de dados.
+- Criar um **docker-compose.yml** para rodar o app e o banco de dados.

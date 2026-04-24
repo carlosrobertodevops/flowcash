@@ -1,0 +1,444 @@
+# SDD - FlowCash
+
+## 1. Visao Tecnica
+
+FlowCash sera uma aplicacao web full-stack em Next.js com App Router, usando Postgres como banco relacional e Drizzle ORM para modelagem, queries e migrations. A UI sera construida com React, Tailwind CSS e componentes no estilo ShadCN/UI.
+
+O sistema sera monolitico no MVP: frontend, backend, autenticacao, server actions e acesso ao banco vivem no mesmo projeto Next.js.
+
+## 2. Stack
+
+- Runtime: Bun
+- Framework: Next.js
+- Linguagem: TypeScript
+- UI: React, Tailwind CSS, ShadCN/UI
+- Icones: Lucide React
+- Graficos: Recharts
+- Validacao: Zod
+- Forms: React Hook Form
+- ORM: Drizzle ORM
+- Banco: Postgres
+- Auth: cookie HTTP-only com token assinado ou sessao persistida
+- Infra local: Docker Compose
+
+## 3. Arquitetura
+
+```text
+Browser
+  |
+  | HTTP / Server Actions
+  v
+Next.js App Router
+  |
+  | auth helpers / validation / services
+  v
+Drizzle ORM
+  |
+  v
+Postgres
+```
+
+Camadas esperadas:
+
+- `src/app`: rotas, layouts, paginas e server actions.
+- `src/components`: componentes reutilizaveis de UI e dominio.
+- `src/components/ui`: componentes base no estilo ShadCN/UI.
+- `src/db`: conexao Drizzle, schema e queries de banco.
+- `src/lib`: autenticacao, validacao, formatos e utilitarios.
+- `src/scripts`: seed e scripts operacionais.
+
+## 4. Modelo de Dados
+
+### users
+
+Armazena usuarios autenticaveis.
+
+Campos:
+
+- `id`: UUID ou serial primary key.
+- `name`: texto.
+- `email`: texto unico.
+- `passwordHash`: texto.
+- `role`: enum/texto, valores iniciais `user` e `admin`.
+- `createdAt`: timestamp.
+- `updatedAt`: timestamp.
+
+Indices:
+
+- unique index em `email`.
+
+### accounts
+
+Armazena contas a pagar e a receber.
+
+Campos:
+
+- `id`: UUID ou serial primary key.
+- `userId`: referencia para `users.id`.
+- `title`: texto.
+- `description`: texto.
+- `createdAt`: timestamp.
+- `updatedAt`: timestamp.
+- `dueDate`: date ou timestamp.
+- `amountBrl`: numeric com escala 2.
+- `amountUsd`: numeric com escala 2.
+- `type`: enum/texto com `payable` e `receivable`.
+- `status`: enum/texto com `pending`, `paid` e `received`.
+- `deleted`: boolean default `false`.
+- `deletedAt`: timestamp nullable.
+- `category`: texto.
+- `tags`: texto separado por virgula.
+- `recurrence`: enum `none`, `monthly`, `yearly`.
+- `recurrenceParentId`: UUID opcional.
+- `collaboratorEmails`: texto com emails separados por virgula.
+
+### password_reset_tokens
+
+Armazena tokens locais de recuperacao de senha.
+
+Campos:
+
+- `id`: UUID.
+- `userId`: referencia para `users.id`.
+- `tokenHash`: hash bcrypt do token.
+- `expiresAt`: timestamp.
+- `usedAt`: timestamp nullable.
+- `createdAt`: timestamp.
+
+Indices:
+
+- index em `userId`.
+- index em `dueDate`.
+- index composto em `userId`, `deleted`, `dueDate`.
+- index composto em `userId`, `type`, `status`.
+
+Regra importante:
+
+- Nunca executar delete fisico em `accounts` para operacoes de usuario.
+- Exclusao deve atualizar `deleted = true` e `deletedAt = now()`.
+
+## 5. Enums e Regras de Dominio
+
+### AccountType
+
+- `payable`: conta a pagar.
+- `receivable`: conta a receber.
+
+### AccountStatus
+
+- `pending`: pendente.
+- `paid`: paga.
+- `received`: recebida.
+
+Regras:
+
+- Uma conta `payable` pode ficar `pending` ou `paid`.
+- Uma conta `receivable` pode ficar `pending` ou `received`.
+- O backend deve validar combinacoes invalidas.
+- Contas vencidas sao `pending` com `dueDate < hoje`.
+- Contas a vencer nos proximos 7 dias sao `pending` com `dueDate >= hoje` e `dueDate <= hoje + 7 dias`.
+- Contas recorrentes geram 6 ocorrencias futuras no momento da criacao.
+- Contas compartilhadas podem ser acessadas pelo dono ou por emails em `collaboratorEmails`.
+
+## 6. Autenticacao e Autorizacao
+
+### Fluxo de Cadastro
+
+1. Usuario envia nome, email e senha.
+2. Zod valida entrada.
+3. Sistema verifica se email ja existe.
+4. Senha e convertida para hash com bcrypt.
+5. Usuario e criado no banco.
+6. Sistema cria sessao e redireciona para dashboard.
+
+### Fluxo de Login
+
+1. Usuario envia email e senha.
+2. Sistema busca usuario por email.
+3. bcrypt compara senha com `passwordHash`.
+4. Em caso valido, sistema cria cookie HTTP-only.
+5. Usuario e redirecionado ao dashboard.
+
+### Fluxo de Recuperacao
+
+1. Usuario informa email.
+2. Sistema gera token aleatorio, salva hash e validade de 30 minutos.
+3. No MVP local, o token e exibido na tela.
+4. Usuario informa token e nova senha.
+5. Sistema valida token, atualiza senha com hash e marca token como usado.
+
+### Sessao
+
+Para o MVP, usar cookie HTTP-only assinado com segredo em `AUTH_SECRET`.
+
+Cookie recomendado:
+
+- Nome: `flowcash_session`
+- Flags: `httpOnly`, `sameSite=lax`, `secure` em producao, `path=/`
+- Payload minimo: `userId`, `email`, `role`
+
+### Protecao de Dados
+
+- Todas as queries de contas devem filtrar por `userId`.
+- Rotas autenticadas devem redirecionar usuario sem sessao para login.
+- Usuario nao-admin nao deve acessar dados de outros usuarios.
+
+## 7. Principais Telas
+
+### Login/Cadastro
+
+Rota sugerida:
+
+- `/login`
+
+Layout:
+
+- Tela dividida.
+- Lado esquerdo: marca FlowCash, proposta de valor e elementos animados.
+- Lado direito: abas ou alternancia entre login e cadastro.
+
+### Dashboard
+
+Rota sugerida:
+
+- `/`
+
+Componentes:
+
+- Header com usuario, botao de tema e logout.
+- Cards de metricas.
+- Lista de contas em cards.
+- Tabela de contas.
+- Grafico interativo.
+- Botao de nova conta.
+- Dialog de criar/editar conta.
+- Importador CSV.
+- Exportador CSV.
+- Botao de impressao/PDF.
+- Notificacoes internas.
+- Filtro por texto/categoria/tag.
+
+## 8. Server Actions e API Interna
+
+Preferir server actions para o MVP.
+
+Acoes sugeridas:
+
+- `registerUser(input)`
+- `loginUser(input)`
+- `logoutUser()`
+- `createAccount(input)`
+- `updateAccount(accountId, input)`
+- `softDeleteAccount(accountId)`
+- `getDashboardData()`
+- `requestPasswordReset(input)`
+- `resetPassword(input)`
+- `importCsv(input)`
+
+Validacao:
+
+- Cada action deve validar entrada com Zod.
+- Actions de conta devem exigir usuario autenticado.
+- Actions devem retornar erros estruturados para o formulario.
+
+## 9. Consultas do Dashboard
+
+O dashboard pode buscar todas as contas visiveis do usuario e calcular metricas no servidor.
+
+Filtro base:
+
+```sql
+where user_id = current_user_id
+  and deleted = false
+```
+
+Metricas:
+
+- `overdue`: contas pendentes com vencimento anterior a hoje.
+- `dueSoon`: contas pendentes com vencimento entre hoje e hoje + 7 dias.
+- `settled`: contas com status `paid` ou `received`.
+- `totalPayableBrl`: soma de contas `payable`.
+- `totalReceivableBrl`: soma de contas `receivable`.
+
+Para o MVP, os calculos podem ser feitos em TypeScript apos buscar as contas. Se o volume crescer, migrar para agregacoes SQL.
+
+## 10. UI e Design System
+
+### Tokens
+
+Usar CSS variables para:
+
+- `background`
+- `foreground`
+- `card`
+- `border`
+- `primary`
+- `muted`
+- `destructive`
+
+### Componentes Base
+
+Componentes esperados:
+
+- `Button`
+- `Input`
+- `Textarea`
+- `Select`
+- `Dialog`
+- `Card`
+- `Badge`
+- `Table`
+- `Tabs`
+- `ThemeToggle`
+
+### Estilo
+
+- Cards com `backdrop-blur`.
+- Fundo com grid sutil usando pseudo-elementos ou backgrounds CSS.
+- Bordas com hover azul brilhante.
+- Transicoes em `transform`, `box-shadow`, `border-color` e `opacity`.
+- Dialogos com overlay escuro/translucido.
+
+## 11. Docker Compose
+
+Servicos esperados:
+
+- `db`: Postgres.
+- `app`: Next.js/Bun.
+
+Variaveis:
+
+```bash
+POSTGRES_USER=flowcash
+POSTGRES_PASSWORD=flowcash
+POSTGRES_DB=flowcash
+DATABASE_URL=postgres://flowcash:flowcash@db:5432/flowcash
+AUTH_SECRET=change-me
+```
+
+Portas:
+
+- App: `3000`
+- Postgres: `5432`
+
+Volume:
+
+- Volume nomeado para dados do Postgres.
+
+## 12. Seed
+
+Script:
+
+```bash
+bun run db:seed
+```
+
+Responsabilidades:
+
+- Criar admin `admin@flowclash.com`.
+- Hash da senha `@flowcash123`.
+- Criar 5 contas vinculadas ao admin.
+- Seed deve ser idempotente quando possivel.
+
+## 13. Migrations
+
+Comandos:
+
+```bash
+bun run db:generate
+bun run db:migrate
+bun run db:push
+```
+
+Durante desenvolvimento inicial, `db:push` pode ser usado para acelerar. Antes de producao, preferir migrations versionadas geradas pelo Drizzle.
+
+## 14. Tratamento de Valores Monetarios
+
+No banco:
+
+- Usar `numeric(12, 2)` para BRL e USD.
+
+No TypeScript:
+
+- Tratar valores vindos do banco como string ou converter com cuidado para numero apenas para exibicao e calculos simples.
+- Evitar floats para regras financeiras sensiveis.
+
+No MVP:
+
+- Valores de dashboard podem ser calculados como `Number(amount)` por simplicidade.
+- Evolucao futura deve usar inteiros em centavos ou biblioteca decimal.
+
+## 14.1 Cotacao BRL/USD
+
+O MVP usa `EXCHANGE_RATE_BRL_USD` como cotacao configuravel por ambiente. O cliente calcula USD a partir de BRL no formulario. Integracao automatica com provider externo fica como evolucao.
+
+## 14.2 Importacao e Exportacao
+
+Importacao CSV usa formato simples com cabecalho opcional:
+
+```text
+title,description,dueDate,amountBrl,amountUsd,type,status,category,tags,collaboratorEmails
+```
+
+Exportacao CSV roda no cliente para as contas atualmente filtradas. PDF usa a impressao nativa do navegador.
+
+## 15. Seguranca
+
+- Senhas com bcrypt.
+- Cookie HTTP-only.
+- `AUTH_SECRET` obrigatorio fora de desenvolvimento.
+- Validacao server-side obrigatoria.
+- Filtrar todas as contas por `userId`.
+- Permitir acesso a contas compartilhadas via `collaboratorEmails`.
+- Nao confiar em IDs enviados pelo cliente sem checar posse do recurso.
+- Evitar vazar se um email existe em mensagens publicas sensiveis.
+
+## 16. Testes e Verificacao
+
+Verificacoes minimas:
+
+- `bun run build`
+- Fluxo manual de cadastro.
+- Fluxo manual de login com admin seed.
+- Criar conta.
+- Editar conta.
+- Apagar conta e confirmar que nao aparece mais.
+- Confirmar no banco que conta apagada ainda existe com `deleted = true`.
+- Alternar dark/light mode.
+- Gerar token local e resetar senha.
+- Criar conta recorrente e verificar ocorrencias futuras.
+- Importar CSV.
+- Exportar CSV e gerar PDF.
+- Compartilhar conta com email de colaborador.
+- Validar responsividade em desktop e mobile.
+
+## 17. Plano de Implementacao
+
+1. Configurar projeto Next.js, Tailwind, Drizzle e Docker Compose.
+2. Criar schema `users` e `accounts`.
+3. Criar conexao de banco e script de seed.
+4. Implementar auth helpers, login, cadastro e logout.
+5. Implementar CRUD de contas com soft delete.
+6. Criar dashboard server-side com dados agregados.
+7. Criar componentes visuais: cards, tabela, grafico e dialog.
+8. Implementar dark/light mode.
+9. Rodar build e testes manuais.
+10. Atualizar README com setup.
+
+## 18. Decisoes Tecnicas Iniciais
+
+- Usar monolito Next.js para reduzir complexidade no MVP.
+- Usar server actions para evitar uma camada REST desnecessaria.
+- Usar Drizzle por tipagem forte e controle explicito de schema.
+- Usar soft delete somente na tabela `accounts`, pois e o requisito central de historico.
+- Usar Recharts por integracao simples com React e boa customizacao visual.
+
+## 19. Possiveis Evolucoes
+
+- Migrar sessao para tabela `sessions` se houver necessidade de invalidacao individual.
+- Adicionar categorias e tags.
+- Criar filtros por periodo.
+- Criar pagina de relatorios.
+- Adicionar cotacao BRL/USD automatica.
+- Criar contas recorrentes.
+- Adicionar auditoria de alteracoes.
