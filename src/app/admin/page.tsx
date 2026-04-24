@@ -1,7 +1,13 @@
 import { and, asc, eq, sql } from "drizzle-orm";
 import Link from "next/link";
 import { redirect, unstable_rethrow } from "next/navigation";
-import { updateAdminTenantAction, updateAdminUserAction } from "@/app/actions";
+import {
+  createAdminTenantAction,
+  createAdminUserAction,
+  deleteAdminUserAction,
+  updateAdminTenantAction,
+  updateAdminUserAction,
+} from "@/app/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,6 +25,21 @@ async function updateTenantFormAction(formData: FormData) {
 async function updateUserFormAction(formData: FormData) {
   "use server";
   await updateAdminUserAction(formData);
+}
+
+async function createTenantFormAction(formData: FormData) {
+  "use server";
+  await createAdminTenantAction(formData);
+}
+
+async function createUserFormAction(formData: FormData) {
+  "use server";
+  await createAdminUserAction(formData);
+}
+
+async function deleteUserFormAction(formData: FormData) {
+  "use server";
+  await deleteAdminUserAction(formData);
 }
 
 const roleLabel = {
@@ -193,13 +214,94 @@ export default async function AdminPage() {
           ))}
         </section>
 
+        {isSuperUser ? (
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold">Novo tenant</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Cria uma nova organização com plano e limites próprios.
+            </p>
+            <form action={createTenantFormAction} className="mt-4 grid gap-3 sm:grid-cols-4">
+              <Input name="name" placeholder="Nome do tenant" aria-label="Nome do tenant" />
+              <Select name="plan" defaultValue="free" aria-label="Plano">
+                <option value="free">Free</option>
+                <option value="standard">Standard</option>
+                <option value="business">Business</option>
+              </Select>
+              <Input
+                name="payableLimit"
+                type="number"
+                min="0"
+                defaultValue="10"
+                aria-label="Limite a pagar"
+                placeholder="Limite a pagar"
+              />
+              <Input
+                name="receivableLimit"
+                type="number"
+                min="0"
+                defaultValue="10"
+                aria-label="Limite a receber"
+                placeholder="Limite a receber"
+              />
+              <div className="sm:col-span-4">
+                <Button type="submit" variant="secondary">
+                  Criar tenant
+                </Button>
+              </div>
+            </form>
+          </Card>
+        ) : null}
+
+        <Card className="p-4">
+          <h2 className="text-lg font-semibold">Novo usuário</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {isSuperUser
+              ? "Super-user escolhe tenant e papel."
+              : "Admin cadastra usuários no próprio tenant."}
+          </p>
+          <form action={createUserFormAction} className="mt-4 grid gap-3 sm:grid-cols-5">
+            <Input name="name" placeholder="Nome" aria-label="Nome" />
+            <Input type="email" name="email" placeholder="Email" aria-label="Email" />
+            <Input
+              type="password"
+              name="password"
+              placeholder="Senha inicial"
+              aria-label="Senha inicial"
+              minLength={6}
+            />
+            <Select
+              name="tenantId"
+              defaultValue={isSuperUser ? (tenantRows[0]?.id ?? "") : currentUser.tenantId}
+              aria-label="Tenant"
+              disabled={!isSuperUser}
+            >
+              {tenantRows.map((tenant) => (
+                <option key={tenant.id} value={tenant.id}>
+                  {tenant.name}
+                </option>
+              ))}
+            </Select>
+            <Select name="role" defaultValue="standard" aria-label="Papel">
+              {isSuperUser ? <option value="super-user">Super-user</option> : null}
+              <option value="admin">Admin</option>
+              <option value="standard">Standard</option>
+              <option value="free">Free</option>
+            </Select>
+            <div className="sm:col-span-5">
+              <Button type="submit" variant="secondary">
+                Criar usuário
+              </Button>
+            </div>
+          </form>
+        </Card>
+
         <Card className="overflow-hidden">
           <div className="border-b border-border p-4">
             <h2 className="text-lg font-semibold">Usuarios</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {isSuperUser
-                ? "Super-user coordena todos os usuarios do app."
-                : "Admin coordena apenas usuarios do proprio tenant."}
+                ? "Super-user coordena todos os usuários do app."
+                : "Admin coordena apenas usuários do próprio tenant."}
             </p>
           </div>
           <div className="overflow-auto">
@@ -256,12 +358,25 @@ export default async function AdminPage() {
                         </Select>
                       </td>
                       <td className="px-4 py-3 text-right">
-                        <form id={formId} action={updateUserFormAction}>
-                          <input type="hidden" name="userId" value={user.id} />
-                          <Button type="submit" variant="secondary" disabled={locked}>
-                            Salvar
-                          </Button>
-                        </form>
+                        <div className="flex justify-end gap-2">
+                          <form id={formId} action={updateUserFormAction}>
+                            <input type="hidden" name="userId" value={user.id} />
+                            <Button type="submit" variant="secondary" disabled={locked}>
+                              Salvar
+                            </Button>
+                          </form>
+                          <form action={deleteUserFormAction}>
+                            <input type="hidden" name="userId" value={user.id} />
+                            <Button
+                              type="submit"
+                              variant="ghost"
+                              disabled={locked}
+                              className="text-destructive hover:text-destructive"
+                            >
+                              Remover
+                            </Button>
+                          </form>
+                        </div>
                       </td>
                     </tr>
                   );
