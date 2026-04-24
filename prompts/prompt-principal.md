@@ -26,3 +26,10 @@
 - Cria seed com 5 notas de exemplo, e com um super-usuário, com email: admin@flowclash.com, senha: @flowcash123.
 - nota nunca são apagadas no banco, só não aparecem mais para o usuário, ou seja, tem uma flag de apagada e a data de apagada.
 - Criar um **docker-compose.yml** para rodar o app e o banco de dados.
+
+## **SAAS e multi-tenent**
+
+- Criar niveis de usuários (super-user, admin, standard e free) e planos: Free, 10 contas de cada (receber/pagar) e etc (com base na quantidade de contas)
+- Cada usuário pode personalizar seu dashboard
+- o super-usuario e o primeiro a se cadastrar e ele tem o dominio geral de todos usuarios.
+- o usuario admin tem dominmio apenas da sua conta.

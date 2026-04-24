@@ -119,6 +119,8 @@ A pagina principal autenticada deve exibir:
 - Cards de contas.
 - Tabela de contas.
 - Grafico moderno e interativo.
+- Cards, resumo visual e tabela devem ser reorganizaveis por arrastar e soltar.
+- A ordem dos blocos do dashboard deve persistir no navegador ao reabrir o app.
 
 Indicadores obrigatorios:
 
@@ -331,6 +333,7 @@ O MVP esta aceito quando:
 - Usuario consegue apagar conta com soft delete.
 - Contas apagadas nao aparecem no dashboard.
 - Dashboard exibe cards, tabela e grafico.
+- Dashboard permite mover e encaixar cards, resumo visual e tabela, preservando a ordem ao reabrir.
 - Dark/light mode funciona.
 - Docker Compose sobe app e banco.
 - Seed cria admin e 5 contas de exemplo.

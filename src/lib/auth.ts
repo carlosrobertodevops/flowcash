@@ -1,11 +1,11 @@
 import "server-only";
 
-import { compare, hash } from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { db } from "@/db";
 import { users, type User } from "@/db/schema";
+export { hashPassword, verifyPassword } from "@/lib/password";
 
 const cookieName = "flowcash_session";
 const secret = new TextEncoder().encode(
@@ -17,14 +17,6 @@ type SessionPayload = {
   email: string;
   role: "user" | "admin";
 };
-
-export async function hashPassword(password: string) {
-  return hash(password, 12);
-}
-
-export async function verifyPassword(password: string, passwordHash: string) {
-  return compare(password, passwordHash);
-}
 
 export async function createSession(user: Pick<User, "id" | "email" | "role">) {
   const token = await new SignJWT({

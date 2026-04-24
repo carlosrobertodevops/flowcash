@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db, pool } from "@/db";
 import { accounts, users } from "@/db/schema";
-import { hashPassword } from "@/lib/auth";
+import { hashPassword } from "@/lib/password";
 
 const adminEmail = "admin@flowclash.com";
 const adminPassword = "@flowcash123";

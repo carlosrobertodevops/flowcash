@@ -30,7 +30,7 @@ services:
       DATABASE_URL: postgres://flowcash:flowcash@db:5432/flowcash
       AUTH_SECRET: flowcash-local-docker-secret-change-me
       EXCHANGE_RATE_BRL_USD: "5.15"
-    command: sh -c "bun run db:push && bun run db:seed && bun run start"
+    command: sh -c "bunx drizzle-kit push --config=drizzle.config.ts && bun src/scripts/seed.ts && bun run start"
     ports:
       - "3000:3000"
 
