@@ -22,7 +22,7 @@
 
 ## **Tecnologias**:
 
-- Usa **bun, Next.js, Drizzle ORM, Postgres, ShadCN/UI e Tailwind**.
+- Usa **bun, Next.js, zod, Drizzle ORM, Postgres, ShadCN/UI e Tailwind**.
 - Cria seed com 5 notas de exemplo, e com um super-usuário, com email: admin@flowclash.com, senha: @flowcash123.
 - nota nunca são apagadas no banco, só não aparecem mais para o usuário, ou seja, tem uma flag de apagada e a data de apagada.
 - Criar um **docker-compose.yml** para rodar o app e o banco de dados.
