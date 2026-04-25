@@ -2,7 +2,7 @@
 
 ## 1. Visao Tecnica
 
-FlowCash sera uma aplicacao web full-stack em Next.js com App Router, usando Postgres como banco relacional e Drizzle ORM para modelagem, queries e migrations. A UI sera construida com React, Tailwind CSS e componentes no estilo ShadCN/UI.
+FlowCash e uma aplicacao web full-stack em Next.js com App Router, usando Postgres como banco relacional e Drizzle ORM para modelagem, queries e migrations. A UI e construida com React, Tailwind CSS e componentes no estilo ShadCN/UI.
 
 O sistema sera monolitico no MVP: frontend, backend, autenticacao, server actions e acesso ao banco vivem no mesmo projeto Next.js.
 
@@ -15,7 +15,7 @@ O sistema sera monolitico no MVP: frontend, backend, autenticacao, server action
 - Icones: Lucide React
 - Graficos: Recharts
 - Validacao: Zod
-- Forms: React Hook Form
+- Forms: server actions, `useActionState` e componentes controlados quando necessario
 - ORM: Drizzle ORM
 - Banco: Postgres
 - Auth: cookie HTTP-only com token assinado ou sessao persistida
@@ -47,6 +47,14 @@ Camadas esperadas:
 - `src/lib`: autenticacao, validacao, formatos e utilitarios.
 - `src/scripts`: seed e scripts operacionais.
 
+Estado atual relevante:
+
+- `src/lib/validators.ts` centraliza schemas Zod v4 para auth, contas, CSV, recuperacao de senha e administracao.
+- `src/lib/dashboard-layout.ts` normaliza, serializa e reordena blocos do dashboard.
+- `src/components/dashboard.tsx` implementa cards, tabela, grafico Recharts, CSV, PDF/impressao, notificacoes e drag-and-drop.
+- `src/app/admin/page.tsx` implementa o painel SaaS administrativo.
+- `docs/UI-PARTNER.md` e a referencia visual para novas telas e componentes.
+
 ## 4. Modelo de Dados
 
 ### tenants
@@ -74,7 +82,7 @@ Campos:
 - `name`: texto.
 - `email`: texto unico.
 - `passwordHash`: texto.
-- `role`: enum `super-user`, `admin`, `standard`, `free`.
+- `role`: enum `user`, `super-user`, `admin`, `standard`, `free`; `user` e legado/compatibilidade, enquanto fluxos atuais usam `super-user`, `admin`, `standard` e `free`.
 - `createdAt`: timestamp.
 - `updatedAt`: timestamp.
 
@@ -242,6 +250,7 @@ Componentes:
 - Botao de impressao/PDF.
 - Notificacoes internas.
 - Filtro por texto/categoria/tag.
+- Blocos reorganizaveis por drag-and-drop com ordem persistida no navegador.
 
 ### Administracao
 
@@ -263,22 +272,25 @@ Preferir server actions para o MVP.
 
 Acoes sugeridas:
 
-- `registerUser(input)`
-- `loginUser(input)`
-- `logoutUser()`
-- `createAccount(input)`
-- `updateAccount(accountId, input)`
-- `softDeleteAccount(accountId)`
-- `getDashboardData()`
-- `requestPasswordReset(input)`
-- `resetPassword(input)`
-- `importCsv(input)`
-- `updateAdminUser(input)`
-- `updateAdminTenant(input)`
+- `registerAction(_, formData)`
+- `loginAction(_, formData)`
+- `logoutAction()`
+- `createAccountAction(formData)`
+- `updateAccountAction(accountId, formData)`
+- `softDeleteAccountAction(accountId)`
+- `requestPasswordResetAction(_, formData)`
+- `resetPasswordAction(_, formData)`
+- `importCsvAction(formData)`
+- `updateAdminUserAction(formData)`
+- `createAdminUserAction(formData)`
+- `deleteAdminUserAction(formData)`
+- `createAdminTenantAction(formData)`
+- `updateAdminTenantAction(formData)`
 
 Validacao:
 
 - Cada action deve validar entrada com Zod.
+- Schemas ficam em `src/lib/validators.ts` e usam `safeParse`, coercoes de numero/data, `z.enum`, `superRefine` para status coerente com tipo e transform para categoria vazia virar `Geral`.
 - Actions de conta devem exigir usuario autenticado.
 - Actions devem retornar erros estruturados para o formulario.
 - Actions administrativas devem validar papel, tenant e impedir alteracao indevida de `super-user`.
@@ -363,6 +375,7 @@ POSTGRES_PASSWORD=flowcash
 POSTGRES_DB=flowcash
 DATABASE_URL=postgres://flowcash:flowcash@db:5432/flowcash
 AUTH_SECRET=change-me
+EXCHANGE_RATE_BRL_USD=5.15
 ```
 
 Portas:
@@ -447,6 +460,7 @@ Exportacao CSV roda no cliente para as contas atualmente filtradas. PDF usa a im
 Verificacoes minimas:
 
 - `bun run build`
+- `bun test`
 - Fluxo manual de cadastro.
 - Fluxo manual de login com admin seed.
 - Criar conta.
@@ -461,18 +475,16 @@ Verificacoes minimas:
 - Compartilhar conta com email de colaborador.
 - Validar responsividade em desktop e mobile.
 
-## 17. Plano de Implementacao
+## 17. Estado de Implementacao Atual
 
-1. Configurar projeto Next.js, Tailwind, Drizzle e Docker Compose.
-2. Criar schema `users` e `accounts`.
-3. Criar conexao de banco e script de seed.
-4. Implementar auth helpers, login, cadastro e logout.
-5. Implementar CRUD de contas com soft delete.
-6. Criar dashboard server-side com dados agregados.
-7. Criar componentes visuais: cards, tabela, grafico e dialog.
-8. Implementar dark/light mode.
-9. Rodar build e testes manuais.
-10. Atualizar README com setup.
+- Projeto configurado com Next.js, Tailwind, Drizzle, Bun e Docker Compose.
+- Schema Drizzle cobre tenants, users, accounts e password reset tokens.
+- Auth, cadastro, login, logout e recuperacao local por token estao implementados.
+- CRUD de contas usa server actions, Zod e soft delete.
+- Dashboard calcula metricas, renderiza cards/tabela/grafico e permite reorganizar blocos.
+- CSV, exportacao, impressao/PDF, recorrencia, categorias, tags e colaboradores estao implementados.
+- Modulo `/admin` cobre gestao SaaS de usuarios e tenants conforme permissoes.
+- Testes automatizados cobrem layout reorganizavel e validadores Zod.
 
 ## 18. Decisoes Tecnicas Iniciais
 
@@ -481,13 +493,14 @@ Verificacoes minimas:
 - Usar Drizzle por tipagem forte e controle explicito de schema.
 - Usar soft delete somente na tabela `accounts`, pois e o requisito central de historico.
 - Usar Recharts por integracao simples com React e boa customizacao visual.
+- Usar Zod v4 como fronteira server-side para normalizar entradas antes de tocar no banco.
+- Persistir ordem do dashboard no navegador para evitar tabela adicional no MVP.
 
 ## 19. Possiveis Evolucoes
 
 - Migrar sessao para tabela `sessions` se houver necessidade de invalidacao individual.
-- Adicionar categorias e tags.
 - Criar filtros por periodo.
 - Criar pagina de relatorios.
 - Adicionar cotacao BRL/USD automatica.
-- Criar contas recorrentes.
 - Adicionar auditoria de alteracoes.
+- Criar permissoes granulares para colaboradores.

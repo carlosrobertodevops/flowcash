@@ -63,6 +63,15 @@ Um app web com login, cadastro e dashboard centralizado. A pagina principal most
 - Compartilhamento de contas por email de colaborador.
 - SaaS multi-tenant com planos, papeis e limites por quantidade de contas.
 - Modulo de administracao para gerenciar usuarios, tenants, planos e limites.
+- Dashboard reorganizavel por arrastar e soltar, com ordem persistida no navegador.
+- Validacao server-side centralizada com Zod v4.
+
+### Estado Atual do Projeto
+
+- O codigo ja possui schemas Zod em `src/lib/validators.ts` para auth, contas, CSV, recuperacao de senha e administracao SaaS.
+- O dashboard ja possui cards, tabela, grafico Recharts, notificacoes, importacao CSV, exportacao CSV, impressao/PDF e blocos reorganizaveis.
+- O modulo `/admin` ja cobre listagem, criacao, edicao e remocao de usuarios, alem de criacao e edicao de tenants conforme permissoes.
+- O guia visual do projeto vive em `docs/UI-PARTNER.md` e deve orientar novas telas e ajustes de UI.
 
 ### SaaS e Multi-Tenant
 
@@ -150,6 +159,7 @@ Critérios de aceite:
 - Conta criada aparece no dashboard.
 - Conta pertence ao usuario autenticado.
 - Dados invalidos sao bloqueados por validacao.
+- Campos textuais sao normalizados no servidor; categoria vazia vira `Geral`.
 
 ### RF05 - Editar Conta
 
@@ -208,6 +218,7 @@ Critérios de aceite:
 - Grafico usa Recharts ou Chart.js.
 - Deve representar contas vencidas, a vencer e pagas/recebidas.
 - O visual deve respeitar dark/light mode.
+- Deve usar o padrao visual descrito em `docs/UI-PARTNER.md`.
 
 ### RF10 - Recuperacao de Senha
 
@@ -233,6 +244,16 @@ O formulario deve calcular valor em dolar a partir do valor em reais usando `EXC
 
 O dashboard deve destacar contas urgentes e permitir compartilhar uma conta com colaboradores por email.
 
+### RF17 - Dashboard Reorganizavel
+
+O usuario deve conseguir reorganizar blocos do dashboard por arrastar e soltar.
+
+Critérios de aceite:
+
+- Cards de metricas, contas, tabela, grafico, notificacoes e importacao podem ser reposicionados.
+- A ordem escolhida persiste no navegador ao recarregar o app.
+- IDs invalidos ou duplicados no layout salvo sao descartados com fallback seguro.
+
 ## 8. Requisitos Nao Funcionais
 
 - A aplicacao deve usar Next.js com App Router.
@@ -243,6 +264,7 @@ O dashboard deve destacar contas urgentes e permitir compartilhar uma conta com 
 - A aplicacao deve ser responsiva.
 - O codigo deve usar TypeScript estrito.
 - Entradas de formulario devem ser validadas com Zod.
+- Validacoes Zod devem usar schemas compartilhados em `src/lib/validators.ts` e cobrir coercoes de data/numero, enums, limites de tamanho e status coerente com tipo da conta.
 - Senhas nao podem ser armazenadas em texto puro.
 - Operacoes de banco devem filtrar por usuario autenticado.
 - Operacoes de banco devem respeitar `tenantId`, papel do usuario e limite do plano.
@@ -285,6 +307,7 @@ Seed obrigatoria:
 - CRUD completo funciona sem perda fisica de dados.
 - App roda localmente com Docker Compose e Bun.
 - Build de producao conclui sem erros.
+- Testes automatizados de layout do dashboard e validadores Zod concluem sem falhas com `bun test`.
 
 ## 12. Riscos
 
@@ -292,6 +315,7 @@ Seed obrigatoria:
 - Autenticacao propria exige cuidado com sessoes e hash de senha.
 - Valores monetarios precisam ser tratados com tipos seguros no banco.
 - Dark/light mode precisa ser verificado em todos os componentes.
+- Validacao Zod deve acompanhar a versao instalada para evitar APIs obsoletas.
 
 ## 13. Roadmap Pos-MVP
 
@@ -300,3 +324,5 @@ Seed obrigatoria:
 - Email real para recuperacao e notificacoes.
 - Open Finance/importacao bancaria direta.
 - Permissoes granulares para colaboradores.
+- Relatorios financeiros dedicados.
+- Auditoria de alteracoes em contas e administracao SaaS.

@@ -1,12 +1,12 @@
-# Graph Report - /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash  (2026-04-24)
+# Graph Report - flowcash  (2026-04-25)
 
 ## Corpus Check
-- 30 files · ~18,839 words
+- 31 files · ~29,110 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 93 nodes · 130 edges · 28 communities detected
-- Extraction: 84% EXTRACTED · 16% INFERRED · 0% AMBIGUOUS · INFERRED: 21 edges (avg confidence: 0.8)
+- 102 nodes · 156 edges · 30 communities detected
+- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 26 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -38,193 +38,115 @@
 - [[_COMMUNITY_Community 25|Community 25]]
 - [[_COMMUNITY_Community 26|Community 26]]
 - [[_COMMUNITY_Community 27|Community 27]]
+- [[_COMMUNITY_Community 28|Community 28]]
+- [[_COMMUNITY_Community 29|Community 29]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `databaseErrorMessage()` - 11 edges
-2. `Select()` - 11 edges
-3. `firstError()` - 10 edges
-4. `formString()` - 9 edges
+1. `databaseErrorMessage()` - 14 edges
+2. `firstError()` - 13 edges
+3. `Select()` - 13 edges
+4. `formString()` - 12 edges
 5. `createAccountAction()` - 8 edges
 6. `updateAccountAction()` - 8 edges
 7. `getSession()` - 8 edges
-8. `updateAdminUserAction()` - 7 edges
-9. `assertAccountLimit()` - 6 edges
-10. `loginAction()` - 6 edges
+8. `requireAdminSession()` - 7 edges
+9. `updateAdminUserAction()` - 7 edges
+10. `createAdminUserAction()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `updateUserFormAction()` --calls--> `updateAdminUserAction()`  [INFERRED]
-  /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/admin/page.tsx → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/actions.ts
-- `updateTenantFormAction()` --calls--> `updateAdminTenantAction()`  [INFERRED]
-  /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/admin/page.tsx → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/actions.ts
-- `getAccessibleAccount()` --calls--> `Select()`  [INFERRED]
-  /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx
-- `requireAdminSession()` --calls--> `getSession()`  [INFERRED]
-  /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts
-- `loginAction()` --calls--> `Select()`  [INFERRED]
-  /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx
+- `updateAdminUserAction()` --calls--> `updateUserFormAction()`  [INFERRED]
+  src/app/actions.ts → src/app/admin/page.tsx
+- `createAdminTenantAction()` --calls--> `createTenantFormAction()`  [INFERRED]
+  src/app/actions.ts → src/app/admin/page.tsx
+- `createAdminUserAction()` --calls--> `createUserFormAction()`  [INFERRED]
+  src/app/actions.ts → src/app/admin/page.tsx
+- `deleteAdminUserAction()` --calls--> `deleteUserFormAction()`  [INFERRED]
+  src/app/actions.ts → src/app/admin/page.tsx
+- `updateAdminTenantAction()` --calls--> `updateTenantFormAction()`  [INFERRED]
+  src/app/actions.ts → src/app/admin/page.tsx
 
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.3
-Nodes (17): accountPayload(), createAccountAction(), databaseErrorMessage(), firstError(), formString(), importCsvAction(), loginAction(), normalizeEmails() (+9 more)
+Cohesion: 0.35
+Nodes (15): createAdminTenantAction(), createAdminUserAction(), databaseErrorMessage(), deleteAdminUserAction(), firstError(), formString(), loginAction(), registerAction() (+7 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.22
-Nodes (8): canAccess(), getAccessibleAccount(), logoutAction(), softDeleteAccountAction(), destroySession(), getCurrentUser(), getSession(), LoginPage()
-
-### Community 2 - "Community 2"
-Cohesion: 0.22
-Nodes (0): 
+Cohesion: 0.29
+Nodes (12): accountPayload(), accountTypeCount(), assertAccountLimit(), canAccess(), createAccountAction(), getAccessibleAccount(), importCsvAction(), normalizeEmails() (+4 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.29
-Nodes (5): accountTypeCount(), assertAccountLimit(), tenantQuota(), main(), Select()
+Nodes (5): createTenantFormAction(), createUserFormAction(), deleteUserFormAction(), updateTenantFormAction(), updateUserFormAction()
 
 ### Community 4 - "Community 4"
+Cohesion: 0.33
+Nodes (5): logoutAction(), destroySession(), getCurrentUser(), getSession(), LoginPage()
+
+### Community 5 - "Community 5"
 Cohesion: 0.6
 Nodes (3): normalizeDashboardLayout(), parseDashboardLayout(), reorderDashboardLayout()
 
-### Community 5 - "Community 5"
-Cohesion: 0.5
-Nodes (2): updateTenantFormAction(), updateUserFormAction()
-
-### Community 6 - "Community 6"
-Cohesion: 0.5
-Nodes (0): 
-
-### Community 7 - "Community 7"
-Cohesion: 0.67
-Nodes (0): 
-
 ### Community 8 - "Community 8"
-Cohesion: 1.0
-Nodes (2): addEnumValue(), main()
+Cohesion: 0.67
+Nodes (1): main()
 
 ### Community 9 - "Community 9"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (2): addEnumValue(), main()
 
 ### Community 10 - "Community 10"
 Cohesion: 1.0
-Nodes (0): 
-
-### Community 11 - "Community 11"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 12 - "Community 12"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 13 - "Community 13"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 14 - "Community 14"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 15 - "Community 15"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 16 - "Community 16"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 17 - "Community 17"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 18 - "Community 18"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 19 - "Community 19"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 20 - "Community 20"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 21 - "Community 21"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 22 - "Community 22"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 23 - "Community 23"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 24 - "Community 24"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 25 - "Community 25"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 26 - "Community 26"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 27 - "Community 27"
-Cohesion: 1.0
-Nodes (0): 
+Nodes (2): defaultedTrimmedString(), trimmedString()
 
 ## Knowledge Gaps
-- **Thin community `Community 9`** (2 nodes): `RootLayout()`, `layout.tsx`
+- **Thin community `Community 11`** (2 nodes): `RootLayout()`, `layout.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 10`** (2 nodes): `cn()`, `auth-panel.tsx`
+- **Thin community `Community 12`** (2 nodes): `cn()`, `auth-panel.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 11`** (2 nodes): `toggleTheme()`, `theme-toggle.tsx`
+- **Thin community `Community 13`** (2 nodes): `toggleTheme()`, `theme-toggle.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 12`** (2 nodes): `Card()`, `card.tsx`
+- **Thin community `Community 14`** (2 nodes): `Card()`, `card.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 13`** (2 nodes): `Badge()`, `badge.tsx`
+- **Thin community `Community 15`** (2 nodes): `Badge()`, `badge.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 14`** (2 nodes): `Button()`, `button.tsx`
+- **Thin community `Community 16`** (2 nodes): `Button()`, `button.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 15`** (2 nodes): `Textarea()`, `textarea.tsx`
+- **Thin community `Community 17`** (2 nodes): `Textarea()`, `textarea.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 16`** (2 nodes): `Input()`, `input.tsx`
+- **Thin community `Community 18`** (2 nodes): `Input()`, `input.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 17`** (2 nodes): `utils.ts`, `cn()`
+- **Thin community `Community 19`** (2 nodes): `utils.ts`, `cn()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 18`** (1 nodes): `postcss.config.mjs`
+- **Thin community `Community 20`** (1 nodes): `postcss.config.mjs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 19`** (1 nodes): `next-env.d.ts`
+- **Thin community `Community 21`** (1 nodes): `next-env.d.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 20`** (1 nodes): `tailwind.config.ts`
+- **Thin community `Community 22`** (1 nodes): `tailwind.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 21`** (1 nodes): `drizzle.config.ts`
+- **Thin community `Community 23`** (1 nodes): `drizzle.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 22`** (1 nodes): `next.config.ts`
+- **Thin community `Community 24`** (1 nodes): `next.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 23`** (1 nodes): `page.tsx`
+- **Thin community `Community 25`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 24`** (1 nodes): `validators.ts`
+- **Thin community `Community 26`** (1 nodes): `validators.test.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 25`** (1 nodes): `dashboard-layout.test.ts`
+- **Thin community `Community 27`** (1 nodes): `dashboard-layout.test.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 26`** (1 nodes): `schema.ts`
+- **Thin community `Community 28`** (1 nodes): `schema.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (1 nodes): `index.ts`
+- **Thin community `Community 29`** (1 nodes): `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Select()` connect `Community 3` to `Community 0`, `Community 1`?**
-  _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Why does `getSession()` connect `Community 1` to `Community 0`?**
-  _High betweenness centrality (0.027) - this node is a cross-community bridge._
-- **Why does `updateAdminUserAction()` connect `Community 0` to `Community 3`, `Community 5`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **Are the 10 inferred relationships involving `Select()` (e.g. with `getAccessibleAccount()` and `tenantQuota()`) actually correct?**
-  _`Select()` has 10 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `Select()` connect `Community 0` to `Community 8`, `Community 1`, `Community 4`?**
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
+- **Why does `getSession()` connect `Community 4` to `Community 0`, `Community 1`?**
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
+- **Why does `main()` connect `Community 8` to `Community 0`?**
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+- **Are the 12 inferred relationships involving `Select()` (e.g. with `getAccessibleAccount()` and `tenantQuota()`) actually correct?**
+  _`Select()` has 12 INFERRED edges - model-reasoned connections that need verification._

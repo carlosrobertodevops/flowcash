@@ -1,23 +1,27 @@
 import { z } from "zod";
 
 const moneySchema = z.coerce
-  .number({ invalid_type_error: "Informe um valor valido." })
+  .number({ error: "Informe um valor valido." })
   .min(0, "O valor nao pode ser negativo.")
   .max(999999999.99, "O valor informado e muito alto.");
+
+const trimmedString = (max: number) => z.string().trim().max(max);
+const defaultedTrimmedString = (fallback: string, max: number) =>
+  trimmedString(max).transform((value) => value || fallback);
 
 export const accountInputSchema = z
   .object({
     title: z.string().trim().min(2, "Titulo deve ter pelo menos 2 caracteres.").max(120),
     description: z.string().trim().min(2, "Descricao deve ter pelo menos 2 caracteres.").max(800),
-    dueDate: z.coerce.date({ invalid_type_error: "Informe uma data de vencimento valida." }),
+    dueDate: z.coerce.date({ error: "Informe uma data de vencimento valida." }),
     amountBrl: moneySchema,
     amountUsd: moneySchema,
     type: z.enum(["payable", "receivable"]),
     status: z.enum(["pending", "paid", "received"]),
-    category: z.string().trim().max(80).default("Geral"),
-    tags: z.string().trim().max(240).default(""),
+    category: defaultedTrimmedString("Geral", 80),
+    tags: trimmedString(240).default(""),
     recurrence: z.enum(["none", "monthly", "yearly"]).default("none"),
-    collaboratorEmails: z.string().trim().max(500).default(""),
+    collaboratorEmails: trimmedString(500).default(""),
   })
   .superRefine((data, ctx) => {
     if (data.type === "payable" && data.status === "received") {
@@ -71,12 +75,12 @@ export const adminTenantUpdateSchema = z.object({
   name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres.").max(100),
   plan: z.enum(["free", "standard", "business"]),
   payableLimit: z.coerce
-    .number({ invalid_type_error: "Limite a pagar invalido." })
+    .number({ error: "Limite a pagar invalido." })
     .int("Limite a pagar deve ser inteiro.")
     .min(0, "Limite a pagar nao pode ser negativo.")
     .max(999999, "Limite a pagar muito alto."),
   receivableLimit: z.coerce
-    .number({ invalid_type_error: "Limite a receber invalido." })
+    .number({ error: "Limite a receber invalido." })
     .int("Limite a receber deve ser inteiro.")
     .min(0, "Limite a receber nao pode ser negativo.")
     .max(999999, "Limite a receber muito alto."),
@@ -86,13 +90,13 @@ export const adminTenantCreateSchema = z.object({
   name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres.").max(100),
   plan: z.enum(["free", "standard", "business"]).default("free"),
   payableLimit: z.coerce
-    .number({ invalid_type_error: "Limite a pagar invalido." })
+    .number({ error: "Limite a pagar invalido." })
     .int("Limite a pagar deve ser inteiro.")
     .min(0, "Limite a pagar nao pode ser negativo.")
     .max(999999, "Limite a pagar muito alto.")
     .default(10),
   receivableLimit: z.coerce
-    .number({ invalid_type_error: "Limite a receber invalido." })
+    .number({ error: "Limite a receber invalido." })
     .int("Limite a receber deve ser inteiro.")
     .min(0, "Limite a receber nao pode ser negativo.")
     .max(999999, "Limite a receber muito alto.")

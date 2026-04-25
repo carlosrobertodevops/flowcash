@@ -25,6 +25,8 @@ Entregar uma aplicacao funcional com:
 - Colaboradores por email em contas compartilhadas.
 - SaaS multi-tenant com tenants, papeis e limites por plano.
 - Modulo administrativo para coordenar usuarios, tenants, planos e limites.
+- Dashboard reorganizavel por arrastar e soltar, com ordem persistida no navegador.
+- Validacao server-side centralizada com Zod v4.
 
 ## 3. Stack Obrigatoria
 
@@ -37,6 +39,7 @@ Entregar uma aplicacao funcional com:
 - Drizzle ORM
 - Postgres
 - Recharts ou Chart.js
+- Zod
 - Docker Compose
 
 ## 4. Entidades
@@ -114,6 +117,7 @@ Regras:
 - Recorrencia `monthly` ou `yearly` gera as proximas 6 contas no cadastro.
 - Colaboradores informados por email podem visualizar e editar a conta compartilhada.
 - Criacao e importacao respeitam os limites `payableLimit` e `receivableLimit` do tenant.
+- Criacao recorrente consome 7 unidades do limite da respectiva `type`.
 
 ## 5. Autenticacao
 
@@ -311,15 +315,17 @@ Regras minimas:
 - Tipo e status dentro dos enums permitidos.
 - Status coerente com tipo da conta.
 - Categoria com limite de tamanho.
+- Categoria vazia deve ser normalizada para `Geral` no servidor.
 - Tags e colaboradores com limite de tamanho.
+- Schemas Zod compartilhados devem validar auth, contas, CSV, recuperacao de senha e administracao SaaS.
 
 ## 12. Seguranca
 
 - Senha com hash bcrypt.
 - Cookie HTTP-only.
 - `AUTH_SECRET` configuravel por ambiente.
-- Queries de conta sempre filtradas por `userId`.
-- Usuario nao pode editar/apagar conta de outro usuario.
+- Queries de conta devem respeitar `tenantId`, papel do usuario, dono da conta e colaboradores.
+- Usuario nao pode editar/apagar conta fora do proprio escopo de acesso.
 - Usuario pode editar/apagar conta em que aparece como colaborador.
 - Nao exibir contas apagadas.
 
@@ -346,6 +352,7 @@ docker compose up --build
 bun install
 bun run dev
 bun run build
+bun test
 bun run db:push
 bun run db:seed
 ```
@@ -382,6 +389,7 @@ O MVP esta aceito quando:
 - Contas apagadas nao aparecem no dashboard.
 - Dashboard exibe cards, tabela e grafico.
 - Dashboard permite mover e encaixar cards, resumo visual e tabela, preservando a ordem ao reabrir.
+- IDs invalidos ou duplicados no layout salvo sao descartados com fallback seguro.
 - Dark/light mode funciona.
 - Docker Compose sobe app e banco.
 - Seed cria admin e 5 contas de exemplo.
@@ -392,6 +400,15 @@ O MVP esta aceito quando:
 - Impressao/PDF abre fluxo nativo do navegador.
 - Cotacao BRL/USD calcula valor em dolar no formulario.
 - Colaborador por email visualiza conta compartilhada.
+- `bun test` conclui sem falhas para validadores Zod e layout do dashboard.
+
+## 16.1 Estado Atual de Implementacao
+
+- `src/lib/validators.ts` contem os schemas Zod v4 usados pelas server actions.
+- `src/components/dashboard.tsx` contem cards, tabela, grafico Recharts, CSV, impressao/PDF, notificacoes e drag-and-drop.
+- `src/lib/dashboard-layout.ts` contem normalizacao, serializacao e reordenacao segura dos widgets.
+- `src/app/admin/page.tsx` contem gestao SaaS de usuarios e tenants.
+- `docs/UI-PARTNER.md` documenta cores, tipografia, cards, dialogos, forms, botoes, badges, tabelas, graficos, animacoes e responsividade.
 
 ## 17. Evolucoes Futuras
 
