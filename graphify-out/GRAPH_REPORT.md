@@ -1,7 +1,7 @@
-# Graph Report - flowcash  (2026-04-25)
+# Graph Report - /Users/carlosroberto/Workspace/Projetos/fullstack/flow/flowcash  (2026-05-03)
 
 ## Corpus Check
-- 31 files · ~29,110 words
+- 31 files · ~19,140 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -54,16 +54,16 @@
 10. `createAdminUserAction()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `updateAdminUserAction()` --calls--> `updateUserFormAction()`  [INFERRED]
-  src/app/actions.ts → src/app/admin/page.tsx
-- `createAdminTenantAction()` --calls--> `createTenantFormAction()`  [INFERRED]
-  src/app/actions.ts → src/app/admin/page.tsx
-- `createAdminUserAction()` --calls--> `createUserFormAction()`  [INFERRED]
-  src/app/actions.ts → src/app/admin/page.tsx
-- `deleteAdminUserAction()` --calls--> `deleteUserFormAction()`  [INFERRED]
-  src/app/actions.ts → src/app/admin/page.tsx
-- `updateAdminTenantAction()` --calls--> `updateTenantFormAction()`  [INFERRED]
-  src/app/actions.ts → src/app/admin/page.tsx
+- `getAccessibleAccount()` --calls--> `Select()`  [INFERRED]
+  src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx
+- `tenantQuota()` --calls--> `Select()`  [INFERRED]
+  src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx
+- `accountTypeCount()` --calls--> `Select()`  [INFERRED]
+  src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx
+- `requireAdminSession()` --calls--> `getSession()`  [INFERRED]
+  src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts
+- `createAccountAction()` --calls--> `getSession()`  [INFERRED]
+  src/app/actions.ts → /Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts
 
 ## Communities
 
@@ -74,6 +74,10 @@ Nodes (15): createAdminTenantAction(), createAdminUserAction(), databaseErrorMes
 ### Community 1 - "Community 1"
 Cohesion: 0.29
 Nodes (12): accountPayload(), accountTypeCount(), assertAccountLimit(), canAccess(), createAccountAction(), getAccessibleAccount(), importCsvAction(), normalizeEmails() (+4 more)
+
+### Community 2 - "Community 2"
+Cohesion: 0.22
+Nodes (0): 
 
 ### Community 3 - "Community 3"
 Cohesion: 0.29
@@ -87,6 +91,14 @@ Nodes (5): logoutAction(), destroySession(), getCurrentUser(), getSession(), Log
 Cohesion: 0.6
 Nodes (3): normalizeDashboardLayout(), parseDashboardLayout(), reorderDashboardLayout()
 
+### Community 6 - "Community 6"
+Cohesion: 0.5
+Nodes (0): 
+
+### Community 7 - "Community 7"
+Cohesion: 0.67
+Nodes (0): 
+
 ### Community 8 - "Community 8"
 Cohesion: 0.67
 Nodes (1): main()
@@ -98,6 +110,82 @@ Nodes (2): addEnumValue(), main()
 ### Community 10 - "Community 10"
 Cohesion: 1.0
 Nodes (2): defaultedTrimmedString(), trimmedString()
+
+### Community 11 - "Community 11"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 12 - "Community 12"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 13 - "Community 13"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 14 - "Community 14"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 15 - "Community 15"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 16 - "Community 16"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 17 - "Community 17"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 18 - "Community 18"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 19 - "Community 19"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 20 - "Community 20"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 21 - "Community 21"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 22 - "Community 22"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 23 - "Community 23"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 24 - "Community 24"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 25 - "Community 25"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 26 - "Community 26"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 27 - "Community 27"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 28 - "Community 28"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 29 - "Community 29"
+Cohesion: 1.0
+Nodes (0): 
 
 ## Knowledge Gaps
 - **Thin community `Community 11`** (2 nodes): `RootLayout()`, `layout.tsx`

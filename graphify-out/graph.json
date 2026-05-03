@@ -6,7 +6,7 @@
     {
       "label": "postcss.config.mjs",
       "file_type": "code",
-      "source_file": "postcss.config.mjs",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/postcss.config.mjs",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_postcss_config_mjs",
       "community": 20,
@@ -15,7 +15,7 @@
     {
       "label": "next-env.d.ts",
       "file_type": "code",
-      "source_file": "next-env.d.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/next-env.d.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_next_env_d_ts",
       "community": 21,
@@ -24,7 +24,7 @@
     {
       "label": "tailwind.config.ts",
       "file_type": "code",
-      "source_file": "tailwind.config.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/tailwind.config.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_tailwind_config_ts",
       "community": 22,
@@ -33,7 +33,7 @@
     {
       "label": "drizzle.config.ts",
       "file_type": "code",
-      "source_file": "drizzle.config.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/drizzle.config.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_drizzle_config_ts",
       "community": 23,
@@ -42,7 +42,7 @@
     {
       "label": "next.config.ts",
       "file_type": "code",
-      "source_file": "next.config.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/next.config.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_next_config_ts",
       "community": 24,
@@ -303,7 +303,7 @@
     {
       "label": "layout.tsx",
       "file_type": "code",
-      "source_file": "src/app/layout.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/layout.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_app_layout_tsx",
       "community": 11,
@@ -312,7 +312,7 @@
     {
       "label": "RootLayout()",
       "file_type": "code",
-      "source_file": "src/app/layout.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/layout.tsx",
       "source_location": "L9",
       "id": "layout_rootlayout",
       "community": 11,
@@ -393,7 +393,7 @@
     {
       "label": "page.tsx",
       "file_type": "code",
-      "source_file": "src/app/login/page.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/login/page.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_app_login_page_tsx",
       "community": 4,
@@ -402,7 +402,7 @@
     {
       "label": "LoginPage()",
       "file_type": "code",
-      "source_file": "src/app/login/page.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/login/page.tsx",
       "source_location": "L5",
       "id": "page_loginpage",
       "community": 4,
@@ -411,7 +411,7 @@
     {
       "label": "dashboard.tsx",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
       "community": 2,
@@ -420,7 +420,7 @@
     {
       "label": "isSameOrAfterToday()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L98",
       "id": "dashboard_issameoraftertoday",
       "community": 2,
@@ -429,7 +429,7 @@
     {
       "label": "quotaText()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L104",
       "id": "dashboard_quotatext",
       "community": 2,
@@ -438,7 +438,7 @@
     {
       "label": "createAccount()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L190",
       "id": "dashboard_createaccount",
       "community": 2,
@@ -447,7 +447,7 @@
     {
       "label": "editAccount()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L195",
       "id": "dashboard_editaccount",
       "community": 2,
@@ -456,7 +456,7 @@
     {
       "label": "exportCsv()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L200",
       "id": "dashboard_exportcsv",
       "community": 2,
@@ -465,7 +465,7 @@
     {
       "label": "importCsv()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L226",
       "id": "dashboard_importcsv",
       "community": 2,
@@ -474,7 +474,7 @@
     {
       "label": "updateDropTarget()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L234",
       "id": "dashboard_updatedroptarget",
       "community": 2,
@@ -483,7 +483,7 @@
     {
       "label": "moveWidget()",
       "file_type": "code",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L248",
       "id": "dashboard_movewidget",
       "community": 2,
@@ -492,7 +492,7 @@
     {
       "label": "account-dialog.tsx",
       "file_type": "code",
-      "source_file": "src/components/account-dialog.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/account-dialog.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_account_dialog_tsx",
       "community": 7,
@@ -501,7 +501,7 @@
     {
       "label": "submit()",
       "file_type": "code",
-      "source_file": "src/components/account-dialog.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/account-dialog.tsx",
       "source_location": "L95",
       "id": "account_dialog_submit",
       "community": 7,
@@ -510,7 +510,7 @@
     {
       "label": "remove()",
       "file_type": "code",
-      "source_file": "src/components/account-dialog.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/account-dialog.tsx",
       "source_location": "L111",
       "id": "account_dialog_remove",
       "community": 7,
@@ -519,7 +519,7 @@
     {
       "label": "auth-panel.tsx",
       "file_type": "code",
-      "source_file": "src/components/auth-panel.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/auth-panel.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_auth_panel_tsx",
       "community": 12,
@@ -528,7 +528,7 @@
     {
       "label": "cn()",
       "file_type": "code",
-      "source_file": "src/components/auth-panel.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/auth-panel.tsx",
       "source_location": "L132",
       "id": "auth_panel_cn",
       "community": 12,
@@ -537,7 +537,7 @@
     {
       "label": "theme-toggle.tsx",
       "file_type": "code",
-      "source_file": "src/components/theme-toggle.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/theme-toggle.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_theme_toggle_tsx",
       "community": 13,
@@ -546,7 +546,7 @@
     {
       "label": "toggleTheme()",
       "file_type": "code",
-      "source_file": "src/components/theme-toggle.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/theme-toggle.tsx",
       "source_location": "L17",
       "id": "theme_toggle_toggletheme",
       "community": 13,
@@ -555,7 +555,7 @@
     {
       "label": "card.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/card.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/card.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_card_tsx",
       "community": 14,
@@ -564,7 +564,7 @@
     {
       "label": "Card()",
       "file_type": "code",
-      "source_file": "src/components/ui/card.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/card.tsx",
       "source_location": "L4",
       "id": "card_card",
       "community": 14,
@@ -573,7 +573,7 @@
     {
       "label": "badge.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/badge.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/badge.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_badge_tsx",
       "community": 15,
@@ -582,7 +582,7 @@
     {
       "label": "Badge()",
       "file_type": "code",
-      "source_file": "src/components/ui/badge.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/badge.tsx",
       "source_location": "L4",
       "id": "badge_badge",
       "community": 15,
@@ -591,7 +591,7 @@
     {
       "label": "button.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/button.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/button.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_button_tsx",
       "community": 16,
@@ -600,7 +600,7 @@
     {
       "label": "Button()",
       "file_type": "code",
-      "source_file": "src/components/ui/button.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/button.tsx",
       "source_location": "L9",
       "id": "button_button",
       "community": 16,
@@ -609,7 +609,7 @@
     {
       "label": "select.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/select.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_select_tsx",
       "community": 0,
@@ -618,7 +618,7 @@
     {
       "label": "Select()",
       "file_type": "code",
-      "source_file": "src/components/ui/select.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx",
       "source_location": "L4",
       "id": "select_select",
       "community": 0,
@@ -627,7 +627,7 @@
     {
       "label": "textarea.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/textarea.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/textarea.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_textarea_tsx",
       "community": 17,
@@ -636,7 +636,7 @@
     {
       "label": "Textarea()",
       "file_type": "code",
-      "source_file": "src/components/ui/textarea.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/textarea.tsx",
       "source_location": "L4",
       "id": "textarea_textarea",
       "community": 17,
@@ -645,7 +645,7 @@
     {
       "label": "input.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/input.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/input.tsx",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_input_tsx",
       "community": 18,
@@ -654,7 +654,7 @@
     {
       "label": "Input()",
       "file_type": "code",
-      "source_file": "src/components/ui/input.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/input.tsx",
       "source_location": "L4",
       "id": "input_input",
       "community": 18,
@@ -663,7 +663,7 @@
     {
       "label": "seed.ts",
       "file_type": "code",
-      "source_file": "src/scripts/seed.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/seed.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_scripts_seed_ts",
       "community": 8,
@@ -672,7 +672,7 @@
     {
       "label": "daysFromNow()",
       "file_type": "code",
-      "source_file": "src/scripts/seed.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/seed.ts",
       "source_location": "L9",
       "id": "seed_daysfromnow",
       "community": 8,
@@ -681,7 +681,7 @@
     {
       "label": "main()",
       "file_type": "code",
-      "source_file": "src/scripts/seed.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/seed.ts",
       "source_location": "L84",
       "id": "seed_main",
       "community": 8,
@@ -690,7 +690,7 @@
     {
       "label": "upgrade-saas-schema.ts",
       "file_type": "code",
-      "source_file": "src/scripts/upgrade-saas-schema.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/upgrade-saas-schema.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_scripts_upgrade_saas_schema_ts",
       "community": 9,
@@ -699,7 +699,7 @@
     {
       "label": "addEnumValue()",
       "file_type": "code",
-      "source_file": "src/scripts/upgrade-saas-schema.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/upgrade-saas-schema.ts",
       "source_location": "L8",
       "id": "upgrade_saas_schema_addenumvalue",
       "community": 9,
@@ -708,7 +708,7 @@
     {
       "label": "main()",
       "file_type": "code",
-      "source_file": "src/scripts/upgrade-saas-schema.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/upgrade-saas-schema.ts",
       "source_location": "L12",
       "id": "upgrade_saas_schema_main",
       "community": 9,
@@ -717,7 +717,7 @@
     {
       "label": "utils.ts",
       "file_type": "code",
-      "source_file": "src/lib/utils.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/utils.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_utils_ts",
       "community": 19,
@@ -726,7 +726,7 @@
     {
       "label": "cn()",
       "file_type": "code",
-      "source_file": "src/lib/utils.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/utils.ts",
       "source_location": "L4",
       "id": "utils_cn",
       "community": 19,
@@ -735,7 +735,7 @@
     {
       "label": "dashboard-layout.ts",
       "file_type": "code",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_dashboard_layout_ts",
       "community": 5,
@@ -744,7 +744,7 @@
     {
       "label": "normalizeDashboardLayout()",
       "file_type": "code",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L17",
       "id": "dashboard_layout_normalizedashboardlayout",
       "community": 5,
@@ -753,7 +753,7 @@
     {
       "label": "parseDashboardLayout()",
       "file_type": "code",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L28",
       "id": "dashboard_layout_parsedashboardlayout",
       "community": 5,
@@ -762,7 +762,7 @@
     {
       "label": "serializeDashboardLayout()",
       "file_type": "code",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L40",
       "id": "dashboard_layout_serializedashboardlayout",
       "community": 5,
@@ -771,7 +771,7 @@
     {
       "label": "reorderDashboardLayout()",
       "file_type": "code",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L53",
       "id": "dashboard_layout_reorderdashboardlayout",
       "community": 5,
@@ -789,7 +789,7 @@
     {
       "label": "format.ts",
       "file_type": "code",
-      "source_file": "src/lib/format.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/format.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_format_ts",
       "community": 6,
@@ -798,7 +798,7 @@
     {
       "label": "formatCurrency()",
       "file_type": "code",
-      "source_file": "src/lib/format.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/format.ts",
       "source_location": "L1",
       "id": "format_formatcurrency",
       "community": 6,
@@ -807,7 +807,7 @@
     {
       "label": "formatDate()",
       "file_type": "code",
-      "source_file": "src/lib/format.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/format.ts",
       "source_location": "L8",
       "id": "format_formatdate",
       "community": 6,
@@ -816,7 +816,7 @@
     {
       "label": "dateInputValue()",
       "file_type": "code",
-      "source_file": "src/lib/format.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/format.ts",
       "source_location": "L16",
       "id": "format_dateinputvalue",
       "community": 6,
@@ -852,7 +852,7 @@
     {
       "label": "dashboard-layout.test.ts",
       "file_type": "code",
-      "source_file": "src/lib/dashboard-layout.test.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.test.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_dashboard_layout_test_ts",
       "community": 27,
@@ -861,7 +861,7 @@
     {
       "label": "auth.ts",
       "file_type": "code",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_auth_ts",
       "community": 4,
@@ -870,7 +870,7 @@
     {
       "label": "createSession()",
       "file_type": "code",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L22",
       "id": "auth_createsession",
       "community": 0,
@@ -879,7 +879,7 @@
     {
       "label": "destroySession()",
       "file_type": "code",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L44",
       "id": "auth_destroysession",
       "community": 4,
@@ -888,7 +888,7 @@
     {
       "label": "getSession()",
       "file_type": "code",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L49",
       "id": "auth_getsession",
       "community": 4,
@@ -897,7 +897,7 @@
     {
       "label": "getCurrentUser()",
       "file_type": "code",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L76",
       "id": "auth_getcurrentuser",
       "community": 4,
@@ -906,7 +906,7 @@
     {
       "label": "schema.ts",
       "file_type": "code",
-      "source_file": "src/db/schema.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/db/schema.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_db_schema_ts",
       "community": 28,
@@ -915,7 +915,7 @@
     {
       "label": "index.ts",
       "file_type": "code",
-      "source_file": "src/db/index.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/db/index.ts",
       "source_location": "L1",
       "id": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_db_index_ts",
       "community": 29,
@@ -2174,7 +2174,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/app/layout.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/layout.tsx",
       "source_location": "L9",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_app_layout_tsx",
@@ -2258,7 +2258,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/app/login/page.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/app/login/page.tsx",
       "source_location": "L5",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_app_login_page_tsx",
@@ -2282,7 +2282,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L98",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2294,7 +2294,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L104",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2306,7 +2306,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L190",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2318,7 +2318,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L195",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2330,7 +2330,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L200",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2342,7 +2342,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L226",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2354,7 +2354,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L234",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2366,7 +2366,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/dashboard.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/dashboard.tsx",
       "source_location": "L248",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_dashboard_tsx",
@@ -2378,7 +2378,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/account-dialog.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/account-dialog.tsx",
       "source_location": "L95",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_account_dialog_tsx",
@@ -2390,7 +2390,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/account-dialog.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/account-dialog.tsx",
       "source_location": "L111",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_account_dialog_tsx",
@@ -2402,7 +2402,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/auth-panel.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/auth-panel.tsx",
       "source_location": "L132",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_auth_panel_tsx",
@@ -2414,7 +2414,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/theme-toggle.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/theme-toggle.tsx",
       "source_location": "L17",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_theme_toggle_tsx",
@@ -2426,7 +2426,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/card.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/card.tsx",
       "source_location": "L4",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_card_tsx",
@@ -2438,7 +2438,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/badge.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/badge.tsx",
       "source_location": "L4",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_badge_tsx",
@@ -2450,7 +2450,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/button.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/button.tsx",
       "source_location": "L9",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_button_tsx",
@@ -2462,7 +2462,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/select.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/select.tsx",
       "source_location": "L4",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_select_tsx",
@@ -2498,7 +2498,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/textarea.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/textarea.tsx",
       "source_location": "L4",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_textarea_tsx",
@@ -2510,7 +2510,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/input.tsx",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/components/ui/input.tsx",
       "source_location": "L4",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_components_ui_input_tsx",
@@ -2522,7 +2522,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/scripts/seed.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/seed.ts",
       "source_location": "L9",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_scripts_seed_ts",
@@ -2534,7 +2534,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/scripts/seed.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/seed.ts",
       "source_location": "L84",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_scripts_seed_ts",
@@ -2546,7 +2546,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/scripts/upgrade-saas-schema.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/upgrade-saas-schema.ts",
       "source_location": "L8",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_scripts_upgrade_saas_schema_ts",
@@ -2558,7 +2558,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/scripts/upgrade-saas-schema.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/upgrade-saas-schema.ts",
       "source_location": "L12",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_scripts_upgrade_saas_schema_ts",
@@ -2570,7 +2570,7 @@
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
-      "source_file": "src/scripts/upgrade-saas-schema.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/scripts/upgrade-saas-schema.ts",
       "source_location": "L23",
       "weight": 1.0,
       "_src": "upgrade_saas_schema_main",
@@ -2582,7 +2582,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/utils.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/utils.ts",
       "source_location": "L4",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_utils_ts",
@@ -2594,7 +2594,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L17",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_dashboard_layout_ts",
@@ -2606,7 +2606,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L28",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_dashboard_layout_ts",
@@ -2618,7 +2618,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L40",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_dashboard_layout_ts",
@@ -2630,7 +2630,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L53",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_dashboard_layout_ts",
@@ -2642,7 +2642,7 @@
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L30",
       "weight": 1.0,
       "_src": "dashboard_layout_parsedashboardlayout",
@@ -2654,7 +2654,7 @@
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/dashboard-layout.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/dashboard-layout.ts",
       "source_location": "L59",
       "weight": 1.0,
       "_src": "dashboard_layout_reorderdashboardlayout",
@@ -2666,7 +2666,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/format.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/format.ts",
       "source_location": "L1",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_format_ts",
@@ -2678,7 +2678,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/format.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/format.ts",
       "source_location": "L8",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_format_ts",
@@ -2690,7 +2690,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/format.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/format.ts",
       "source_location": "L16",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_format_ts",
@@ -2738,7 +2738,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L22",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_auth_ts",
@@ -2750,7 +2750,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L44",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_auth_ts",
@@ -2762,7 +2762,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L49",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_auth_ts",
@@ -2774,7 +2774,7 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L76",
       "weight": 1.0,
       "_src": "users_carlosroberto_workspace_projetos_fullstack_flowcash_src_lib_auth_ts",
@@ -2786,7 +2786,7 @@
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/auth.ts",
+      "source_file": "/Users/carlosroberto/Workspace/Projetos/fullstack/flowcash/src/lib/auth.ts",
       "source_location": "L77",
       "weight": 1.0,
       "_src": "auth_getcurrentuser",
