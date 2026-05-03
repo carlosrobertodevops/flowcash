@@ -6,3 +6,7 @@ drizzle
 dist
 coverage
 caverman/
+graphify-out/manifest.json
+graphify-out/cost.json
+# opcional:
+graphify-out/cache/

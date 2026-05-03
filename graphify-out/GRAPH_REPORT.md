@@ -1,7 +1,7 @@
 # Graph Report - /Users/carlosroberto/Workspace/Projetos/fullstack/flow/flowcash  (2026-05-03)
 
 ## Corpus Check
-- 31 files · ~19,140 words
+- 31 files · ~10,466 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
